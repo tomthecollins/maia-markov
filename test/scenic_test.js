@@ -1,4 +1,5 @@
-const mm = require('../dist/index');
+const mm = require("../dist/index")
+const sr = require("seed-random")
 
 const dataEx = [
   {
@@ -30,7 +31,15 @@ const dataEx = [
   }
 ]
 let g = new mm.Graph(dataEx, "vName", "nbs", "dist")
-console.log("g:", g)
+console.log("Graph loaded.")
+// console.log("g:", g)
 
-const ans = g.print_scenic_path("1", "6")
+const seed = "hello"
+sr(seed, {global: true})
+const ans = g.print_scenic_path("1", "6", 0.5)
 console.log("ans:", ans)
+
+const seed2 = "goodbye"
+sr(seed2, {global: true})
+const ans2 = g.print_scenic_path("1", "6", 0.5)
+console.log("ans2:", ans2)

@@ -67,7 +67,7 @@ TBD
 
 ## Release History
 
-* 0.1.0 Working on scenic_path().
+* 0.1.1 Working on scenic_path().
 * 0.0.72-73 Fixed ontime correction bug.
 * 0.0.70-71 Switched unique_rows(ps, true) in for sort_rows(ps) in MidiImport, in order to address issue of MIDI files containing duplicate points.
 * 0.0.64-69 Use of timelapse objects in new version of MAIA Util, and some debugging of MidiImport's get_points().

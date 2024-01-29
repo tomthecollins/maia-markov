@@ -237,7 +237,10 @@ Graph.prototype = {
         if (
         // The next line is intended to avoid the undefined error in beginning
         // to construct the shortest path.
-        v.dist === Infinity || v.dist > u.dist + nb.w && Math.random() > 0.5) {
+        v.dist === Infinity ||
+        // If true, there's a better way to get to vertex v.
+        v.dist > u.dist + nb.w && Math.random() > loveOfScenery) {
+          // Update the heap with the more efficient route.
           q.heap.removeValue(v);
           v.dist = u.dist + nb.w;
           v.prev = u;
@@ -254,7 +257,7 @@ Graph.prototype = {
   },
 
   print_scenic_path: function print_scenic_path(startName, endName, loveOfScenery) {
-    this.scenic_path(startName);
+    this.scenic_path(startName, loveOfScenery);
     var relVtx = this.get_vertex(endName);
     if (!relVtx.visited) {
       // These two vertices are not connected.
