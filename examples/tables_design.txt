@@ -1,0 +1,38 @@
+style
+rowid
+name (string like "Bach chorale")
+
+
+
+state_space
+rowid
+state (string like "1.5|-7,0,9")
+state_type (string like "beat rel MNN")
+id_continuations (string like "5,140,6231")
+
+
+
+continuation
+rowid
+state
+id_composition
+id_orig_points (string like "5,6,9,12")
+
+
+
+composition (metadata about the composition)
+?id_styles (string of rowids for style names that apply to this composition)
+
+
+
+orig_point
+rowid
+id_composition
+ontime
+mnn
+mpn
+duration
+staff_no
+velocity
+
+
