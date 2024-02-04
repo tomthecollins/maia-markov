@@ -26,7 +26,10 @@ console.log("dataEx[4]['continuations']:", dataEx[4]["continuations"])
 const ans = count_continuations(dataEx[4]["continuations"], "beat_rel_sq_MNN_state")
 console.log("ans:", ans)
 
-// console.log("dataEx", dataEx.length)
+// Deduplicate a particular property of the continuations array, convert the
+// numeric arrays to strings, use the counting performed during deduplication
+// to provide distances between states, and return ready for loading onto a
+// graph.
 const dataExStr = dataEx.map(function(st){
   // Get count of continuations.
   const contnCount = count_continuations(st.continuations, "beat_rel_sq_MNN_state")
