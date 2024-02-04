@@ -18,15 +18,15 @@ const sr = require("seed-random")
 const mainPaths = {
   "tom": {
     "midi": path.join(
-      "/Users", "tomthecollins", "Shizz", "York", "Projects", "AI\ Eurovision",
-      "2023", "io", "midi"
+      "/Users", "tomthecollins", "Shizz", "York", "Students", "Chenyu\ Gao",
+      "datasets", "29thSep2023_theme_var_extracted_for_training"
     ),
-    "midiDirs": ["midi_1"],
+    "midiDirs": ["train"],
     "outputDir": path.join(
-      "/Users", "tomthecollins", "Shizz", "York", "Projects", "AI\ Eurovision",
-      "2023", "io", "for_maia_markov"
+      "/Users", "tomthecollins", "Shizz", "York", "Students", "Chenyu\ Gao",
+      "markov_infilling", ""
     ),
-    "outputFileName": "aisc23_rnbnr_apr23_chords_midi_1_500"
+    "outputFileName": "pop_909_train"
   },
   "chenyu": {
     "midi": path.join(

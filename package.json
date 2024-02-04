@@ -40,7 +40,7 @@
     "xml2js": "^0.4.23",
     "xml-js": "^1.6.11",
     "browserify": "^16.2.3",
-    "maia-util": "^0.3.7",
+    "maia-util": "^0.3.11",
     "nodeplotlib": "^0.6.5",
     "rollup-plugin-commonjs": "^10.0.0",
     "seed-random": "^2.2.0",
