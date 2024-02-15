@@ -65,6 +65,7 @@ let g = new mm.Graph(dataExStr, "beat_rel_sq_MNN_state", "continuations", "dist"
 //     g.add_edge(d.beat_rel_sq_MNN_state, nb.beat_rel_sq_MNN_state, 1)
 //   })
 // })
+// console.log("g", g.vertexMap['3|-5,-1,2'].nbs)
 const path2 = g.print_scenic_path("2.5|-5,-1,2", "1.5|-8,-1,11", 0.5)
 
 

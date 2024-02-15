@@ -79,10 +79,10 @@ midiDirs.forEach(function(midiDir, jDir){
   console.log("files.length:", files.length)
 
   files
-  .slice(0, 5)
+  .slice(0, 30)
   .forEach(function(file, iFile){
     console.log("file:", file)
-    const fid = file.split(".mid")[0]
+    const fid = file.split("_")[0]
     if (iFile % 10 === 0){
       console.log("FILE " + (iFile + 1) + " OF " + files.length + ".")
     }
