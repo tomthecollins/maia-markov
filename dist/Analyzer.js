@@ -777,6 +777,62 @@ Analyzer.prototype = {
     return initial;
   },
 
+  construct_scl: function construct_scl(compObjs, param) {
+    var stateType = param.stateType;
+    var onAndOff = param.onAndOff;
+    var squashRange = param.squashRangeMidi;
+    var phraseBoundaryPropName = param.phraseBoundaryPropName;
+
+    // Could check that each of the compObjs have just one time signature, and
+    // that they are all equal to one another...
+
+    var nscr = compObjs.length;
+    var state_context_pairs = [];
+    for (var iscr = 0; iscr < nscr; iscr++) {
+      switch (stateType) {
+        case "beat_MNN_state":
+          state_context_pairs[iscr] = this.comp_obj2beat_mnn_states(compObjs[iscr], onAndOff);
+          break;
+        case "beat_rel_MNN_state":
+          state_context_pairs[iscr] = this.comp_obj2beat_rel_mnn_states(compObjs[iscr], onAndOff);
+          break;
+        case "beat_rel_sq_MNN_state":
+          state_context_pairs[iscr] = this.comp_obj2beat_rel_sq_mnn_states(compObjs[iscr], onAndOff, squashRange);
+          break;
+        case "lyrics_state":
+          state_context_pairs[iscr] = this.lyrics_obj2lyrics_states(compObjs[iscr]);
+          break;
+        default:
+          console.log("SHOULD NOT GET HERE!");
+      }
+      //if (iscr == 0){
+      //  console.log('state_context_pairs[iscr]:', state_context_pairs[iscr]);
+      //}
+    }
+
+    var scl = {};
+    for (var _iscr4 = 0; _iscr4 < nscr; _iscr4++) {
+      for (var jstate = 0; jstate < state_context_pairs[_iscr4].length - 1; jstate++) {
+        var scPair = state_context_pairs[_iscr4][jstate];
+        var key = void 0;
+        if (stateType == "lyrics_state") {
+          // State is already a string.
+          key = scPair[stateType];
+        } else {
+          // State is not a string, but we can make it so.
+          key = this.state2string(scPair[stateType]);
+        }
+
+        if (scl[key] !== undefined) {
+          scl[key].push(scPair["context"]);
+        } else {
+          scl[key] = [scPair["context"]];
+        }
+      }
+    }
+    return scl;
+  },
+
   prune_initial: function prune_initial(initialDistbn, stm, param) {
     var stateType = param.stateType;
 

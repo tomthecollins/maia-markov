@@ -782,6 +782,74 @@ Analyzer.prototype = {
     return initial;
   },
 
+  construct_scl: function(compObjs, param){
+    const stateType = param.stateType
+    const onAndOff = param.onAndOff
+    const squashRange = param.squashRangeMidi
+    const phraseBoundaryPropName = param.phraseBoundaryPropName
+
+    // Could check that each of the compObjs have just one time signature, and
+    // that they are all equal to one another...
+
+    const nscr = compObjs.length
+    const state_context_pairs = []
+    for (let iscr = 0; iscr < nscr; iscr++){
+      switch (stateType){
+        case "beat_MNN_state":
+        state_context_pairs[iscr] = this.comp_obj2beat_mnn_states(
+          compObjs[iscr],
+          onAndOff
+        );
+        break;
+        case "beat_rel_MNN_state":
+        state_context_pairs[iscr] = this.comp_obj2beat_rel_mnn_states(
+          compObjs[iscr],
+          onAndOff
+        );
+        break;
+        case "beat_rel_sq_MNN_state":
+        state_context_pairs[iscr] = this.comp_obj2beat_rel_sq_mnn_states(
+          compObjs[iscr],
+          onAndOff,
+          squashRange
+        );
+        break;
+        case "lyrics_state":
+        state_context_pairs[iscr] = this.lyrics_obj2lyrics_states(compObjs[iscr]);
+        break;
+        default:
+        console.log("SHOULD NOT GET HERE!")
+      }
+      //if (iscr == 0){
+      //  console.log('state_context_pairs[iscr]:', state_context_pairs[iscr]);
+      //}
+    }
+
+    const scl = {}
+    for (let iscr = 0; iscr < nscr; iscr++){
+      for (let jstate = 0; jstate < state_context_pairs[iscr].length - 1; jstate++){
+        const scPair = state_context_pairs[iscr][jstate]
+        let key
+        if (stateType == "lyrics_state"){
+          // State is already a string.
+          key = scPair[stateType]
+        }
+        else {
+          // State is not a string, but we can make it so.
+          key = this.state2string(scPair[stateType])
+        }
+
+        if (scl[key] !== undefined){
+          scl[key].push(scPair["context"])
+        }
+        else {
+          scl[key] = [scPair["context"]]
+        }
+      }
+    }
+    return scl
+  },
+
   prune_initial: function(initialDistbn, stm, param){
     const stateType = param.stateType
 

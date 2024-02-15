@@ -167,3 +167,9 @@ fs.writeFileSync(
   path.join(mainPath["outputDir"], mainPath["outputFileName"] + "_initial.json"),
   JSON.stringify(initialDistbn, null, 2)
 )
+
+let scl = an.construct_scl(comps, param)
+fs.writeFileSync(
+  path.join(mainPath["outputDir"], mainPath["outputFileName"] + "_scl.json"),
+  JSON.stringify(scl, null, 2)
+)
