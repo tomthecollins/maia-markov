@@ -47,7 +47,7 @@ const param = {
   "stateType": "beat_rel_sq_MNN_state",
   "onAndOff": false,
   "squashRangeMidi": 12,
-  "nosConsecutives": 4,
+  "nosConsecutives": 4, // 8, 
   "downbeat": {
     "histType": "drumsTrueVelocityTrue",
     "drumsOnly": true,
