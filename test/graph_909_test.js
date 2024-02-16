@@ -4,6 +4,7 @@ const path = require("path")
 const mu = require("maia-util")
 const mm = require('../dist/index')
 const an = new mm.Analyzer()
+const gn = new mm.Generator()
 const fs = require("fs")
 const { Midi } = require('@tonejs/midi')
 const sr = require('seed-random')
@@ -25,14 +26,44 @@ const mainPaths = {
     "midiDir": "test",
     "themeSample": ["002_A_0.mid"],
     "sclPath": "/Users/gaochenyu/Codes/markov_out",
-    "sclName": "pop909_train_scl.json"
+    "sclName": "pop909_train_scl.json",
+    "outputDir": path.join(
+      "/Users/gaochenyu/Codes/markov_out/out_midi"
+    ),
   }
 }
 
 let param = {
+  "stateType": "beat_rel_sq_MNN_state",
+  "pointReconstruction": "rel_sq_MNN",
+  "timeSignatures": [ {"barNo": 1, "topNo": 4, "bottomNo": 4, "ontime": 0} ],
+  "stm": null,
+  "initial": null,
+  "nosConsecutives": 4,
+  "ontimeUpperLimit": 16,
+  "squashRangeMidiMorph": [12, 7],
   "indices": {
     "ontime": 0, "MNN": 1, "MPN": 2, "duration": 3, "channel": 4, "velocity": 5
   },
+  "randCount": 0,
+  "midiExport": {
+    "scaleFactor": 0.5,
+    "timeSigTopNo": 4,
+    "timeSigBottomNo": 4,
+    "noteIndices": {
+      "ontimeIndex": 0,
+      "mnnIndex": 1,
+      "durationIndex": 3,
+      "channelIndex": 4,
+      "velocityIndex": 5
+    },
+    "ccIndices": {
+      "ontimeIndex": 0,
+      "numberIndex": 1,
+      "channelIndex": 2,
+      "valueIndex": 3
+    }
+  }
 }
 
 // Grab user name from command line to set path to stm.
@@ -157,31 +188,25 @@ midiDirs.slice(0,1)
   const sc_pair = path2sc_pairs(path3, mainPath['sclName'])
   console.log('sc_pair', sc_pair)
 
-  // // Convert points to a key according to the initial state.
-  // const midiout = new Midi()
-  // gendOutput.points = gendOutput.points.map(function(p){
-  //   p[param.indices.MNN] += gendOutput.stateContextPairs[0].context
-  //   .tonic_pitch_closest[0] //60
-  //   p[param.indices.MPN] += gendOutput.stateContextPairs[0].context
-  //   .tonic_pitch_closest[1] //60
-  //   return p
-  // })
-  // // Save points as a MIDI file and state-context pairs as a text file.
-  // console.log("midiout.header:", midiout.header)
-  // let track = midiout.addTrack()
-  // gendOutput.points.map(function(p){
-  //   track.addNote({
-  //     midi: p[param.indices.MNN],
-  //     time: p[param.indices.ontime],
-  //     duration: p[param.indices.duration],
-  //     velocity: p[param.indices.velocity]
-  //   })
-  // })
-  // fs.writeFileSync(
-  //   pathsEtc.outputDir + "exampleVar_" + "002_A" + ".mid",
-  //   new Buffer(midiout.toArray())
-  // )
 
+  let points = gn.get_points_from_states(sc_pair, param)
+  points = points.map(function(p){
+    p[param.indices.MNN] += sc_pair[0].context.tonic_pitch_closest[0] //60
+    p[param.indices.MPN] += sc_pair[0].context.tonic_pitch_closest[1] //60
+    p[param.indices.channel] = 0
+    return p
+  })
+
+  const me = new mm.MidiExport(
+    points,
+    null,
+    path.join(mainPath["outputDir"], "pop909_scenic_" + seed + ".mid"),
+    param.midiExport
+  )
+  // fs.writeFileSync(
+  //   path.join(path.join(mainPath["outputDir"], "pop909_scenic_" + seed + ".txt")),
+  //   JSON.stringify(sc_pair, null, 2)
+  // )
 })
 
 
