@@ -9,8 +9,8 @@ const fs = require("fs")
 const { Midi } = require('@tonejs/midi')
 const sr = require('seed-random')
 
-const seed = "hello683482"
-sr(seed, {global: true})
+// const seed = "hello683482"
+// sr(seed, {global: true})
 
 const mainPaths = {
   "tom": {
@@ -24,7 +24,7 @@ const mainPaths = {
     "midi": path.join(
       "/Users/gaochenyu/Dataset/POP909_with_structure_labels/29thSep2023_theme_var_extracted_for_training"),
     "midiDir": "test",
-    "themeSample": ["002_A_0.mid"],
+    "themeSample": ["002_A_0.mid", "052_B_0.mid", "597_A_0.mid", "623_A_0.mid", "866_A_0.mid"],
     "sclPath": "/Users/gaochenyu/Codes/markov_out",
     "sclName": "pop909_train_scl.json",
     "outputDir": path.join(
@@ -63,7 +63,28 @@ let param = {
       "channelIndex": 2,
       "valueIndex": 3
     }
-  }
+  },
+  "downbeat": {
+    "histType": "drumsFalseVelocityTrue",
+    "drumsOnly": false,
+    "rounding": true,
+    "granularity": 4,
+    "beatsInMeasure": 4,
+    "velocityIndex": 4,
+    "ontimeIndex": 0
+  },
+  "ontimeIndex": 0,
+  "noteIndices": {
+    "ontimeIndex": 0,
+    "mnnIndex": 1,
+    "durationIndex": 3,
+    "channelIndex": 4,
+    "velocityIndex": 5
+  },
+  "controlChanges": null,
+  "scaleFactor": 0.5,
+  "timeSigtopNo": 4,
+  "timeSigBottomNo": 4
 }
 
 // Grab user name from command line to set path to stm.
@@ -134,9 +155,13 @@ midiDirs = midiDirs.filter(function(fnam){
     return true
   }
 })
+// Filter MIDIs in ['themeSample']
+midiDirs = midiDirs.filter(function(midiDir){
+    return mainPath["themeSample"].indexOf(midiDir) >= 0
+})
 // console.log(midiDirs)
 
-midiDirs.slice(0,1)
+midiDirs.slice(0,5)
 .forEach(function(midiDir, jDir){
   // Obtain states from a theme.
   console.log("midiDir", midiDir)
@@ -145,6 +170,7 @@ midiDirs.slice(0,1)
   )
   const midi = new Midi(midiData)
   console.log("midi.header", midi.header)
+  const tmp_bpm = midi.header.tempos
   const timeSigs = [{"barNo": 1, "topNo": 4, "bottomNo": 4, "ontime": 0}]
   if (timeSigs[0].topNo !== 4){
     console.log("timeSigs:", timeSigs)
@@ -177,32 +203,109 @@ midiDirs.slice(0,1)
     allPoints, timeSigs, false, [0, 1/4, 1/3, 1/2, 2/3, 3/4, 1]//, [0, 1/6, 1/4, 1/3, 1/2, 2/3, 3/4, 5/6, 1]
   )
   let current_state = an.comp_obj2beat_rel_sq_mnn_states(comp)
-  // ??? Decimal beat does not exist in 'pop909_train.json'.
-  const beginning_state = an.state2string(current_state[0].beat_rel_sq_MNN_state)
-  const end_state = an.state2string(current_state[current_state.length-1].beat_rel_sq_MNN_state)
-  console.log("Beginning_state", beginning_state)
-  console.log("End_state", end_state) 
+  // console.log("current_state", current_state)
 
-  const path3 = g.print_scenic_path(beginning_state, end_state, 0.5)
-  console.log("path3", path3)
-  const sc_pair = path2sc_pairs(path3, mainPath['sclName'])
-  console.log('sc_pair', sc_pair)
+  // Perhaps we could try to obtain the beginning and the end states of each measure, 
+  // and try to find scenic_path().
+  let beg_idx = 0
+  let end_idx = 0
+  let full_sc_pair = []
+  for(let i = 0; i < current_state.length; i ++){
+    if(i === current_state.length-1){
+      end_idx = i
+      const beginning_state = an.state2string(current_state[beg_idx].beat_rel_sq_MNN_state)
+      const end_state = an.state2string(current_state[end_idx].beat_rel_sq_MNN_state)
+      const path3 = g.print_scenic_path(beginning_state, end_state, 0.5)
+      // console.log("path3", path3)
+      if(path3 !== undefined){
+        const sc_pair = path2sc_pairs(path3, mainPath['sclName'])
+        full_sc_pair.push(current_state[beg_idx])
+        for(let j = 1; j < sc_pair.length - 1; j ++){
+          full_sc_pair.push(sc_pair[j])
+        }
+        full_sc_pair.push(current_state[end_idx])
+      }
+      else{
+        for(let j = beg_idx; j <= end_idx; j ++){
+          full_sc_pair.push(current_state[j])
+        }
+      }
+    }
+    else if(current_state[i+1].beat_rel_sq_MNN_state[0]<current_state[i].beat_rel_sq_MNN_state[0]){
+      end_idx = i
+      const beginning_state = an.state2string(current_state[beg_idx].beat_rel_sq_MNN_state)
+      const end_state = an.state2string(current_state[end_idx].beat_rel_sq_MNN_state)
+      const path3 = g.print_scenic_path(beginning_state, end_state, 0.5)
+      // console.log("path3", path3)
+      if(path3 !== undefined){
+        const sc_pair = path2sc_pairs(path3, mainPath['sclName'])
+        full_sc_pair.push(current_state[beg_idx])
+        for(let j = 1; j < sc_pair.length - 1; j ++){
+          full_sc_pair.push(sc_pair[j])
+        }
+        full_sc_pair.push(current_state[end_idx])
+      }
+      else{
+        for(let j = beg_idx; j <= end_idx; j ++){
+          full_sc_pair.push(current_state[j])
+        }
+      }
+      beg_idx = i + 1
+    }
+  }
+  console.log(full_sc_pair.length)
+  // // ??? Decimal beat does not exist in 'pop909_train.json'.
+  // const beginning_state = an.state2string(current_state[0].beat_rel_sq_MNN_state)
+  // const end_state = an.state2string(current_state[current_state.length-1].beat_rel_sq_MNN_state)
+  // console.log("Beginning_state", beginning_state)
+  // console.log("End_state", end_state) 
+
+  // const path3 = g.print_scenic_path(beginning_state, end_state, 0.5)
+  // console.log("path3", path3)
+  // const sc_pair = path2sc_pairs(path3, mainPath['sclName'])
+  // console.log('sc_pair', sc_pair)
 
 
-  let points = gn.get_points_from_states(sc_pair, param)
+  let points = gn.get_points_from_states(full_sc_pair, param)
   points = points.map(function(p){
-    p[param.indices.MNN] += sc_pair[0].context.tonic_pitch_closest[0] //60
-    p[param.indices.MPN] += sc_pair[0].context.tonic_pitch_closest[1] //60
+    p[param.indices.MNN] += full_sc_pair[0].context.tonic_pitch_closest[0] //60
+    p[param.indices.MPN] += full_sc_pair[0].context.tonic_pitch_closest[1] //60
     p[param.indices.channel] = 0
     return p
   })
+  console.log("p", points.slice(0,5))
 
-  const me = new mm.MidiExport(
-    points,
-    null,
-    path.join(mainPath["outputDir"], "pop909_scenic_" + seed + ".mid"),
-    param.midiExport
+  // Write tempo in MIDI.
+  const midiOut = new Midi()
+  let ntracks = 1
+  const tmp_out_points = points
+  const tmp_out_bpm = tmp_bpm
+  for (let i_track = 0; i_track < ntracks; i_track++){
+    const track = midiOut.addTrack()
+    track.name = "Piano"
+    track["channel"] = i_track
+    tmp_out_points.forEach(function(p){
+      track.addNote({
+        midi: p[param.noteIndices.mnnIndex],
+        time: param.scaleFactor*(p[param.noteIndices.ontimeIndex]),
+        duration: param.scaleFactor*p[param.noteIndices.durationIndex],
+        velocity: p[param.noteIndices.velocityIndex]
+      })
+    })
+  }
+  midiOut.header.tempos = tmp_bpm
+
+  fs.writeFileSync(
+    path.join(mainPath["outputDir"], "pop909_scenic_" + midiDir + ".mid"),
+    new Buffer.from(midiOut.toArray())
   )
+
+  // const me = new mm.MidiExport(
+  //   points,
+  //   null,
+  //   path.join(mainPath["outputDir"], "pop909_scenic_" + midiDir + ".mid"),
+  //   param.midiExport
+  // )
   // fs.writeFileSync(
   //   path.join(path.join(mainPath["outputDir"], "pop909_scenic_" + seed + ".txt")),
   //   JSON.stringify(sc_pair, null, 2)
