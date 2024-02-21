@@ -213,7 +213,7 @@ Graph.prototype = {
           (
             // If true, there's a better way to get to vertex v.
             (v.dist > u.dist + nb.w) &&
-            Math.random() > loveOfScenery
+            Math.random() <= loveOfScenery
           )
         ){
           // Update the heap with the more efficient route.
