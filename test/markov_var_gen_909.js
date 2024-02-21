@@ -89,12 +89,7 @@ let param = {
 
 // Grab user name from command line to set path to stm.
 const mainPath = mainPaths[argv.u]
-
 const dataEx = require(mainPath["inStm"])
-
-// console.log("dataEx[4]['continuations']:", dataEx[4]["continuations"])
-// const ans = count_continuations(dataEx[4]["continuations"], "beat_rel_sq_MNN_state")
-// console.log("ans:", ans)
 
 // Deduplicate a particular property of the continuations array, convert the
 // numeric arrays to strings, use the counting performed during deduplication
@@ -116,32 +111,8 @@ const dataExStr = dataEx.map(function(st){
   }
 })
 console.log("dataEx.length", dataEx.length)
-// const dataExStr = dataEx.map(function(st){
-//   return {
-//     "beat_rel_sq_MNN_state": an.state2string(st.beat_rel_sq_MNN_state),
-//     "continuations":st.continuations.map(function(con){
-//       return {
-//         "beat_rel_sq_MNN_state": an.state2string(con.beat_rel_sq_MNN_state),
-//         "context": con.context
-//       }
-//     })
-//   }
-// })
-// console.log("dataExStr[4]['continuations']:", dataExStr[4]["continuations"])
 
 let g = new mm.Graph(dataExStr, "beat_rel_sq_MNN_state", "continuations", "dist")
-// let g = new mm.Graph()
-// dataExStr.map(function(d){
-//   d.continuations.map(function(nb){
-//     g.add_edge(d.beat_rel_sq_MNN_state, nb.beat_rel_sq_MNN_state, 1)
-//   })
-// })
-// console.log("g", g.vertexMap['3|-5,-1,2'].nbs)
-// const path2 = g.print_scenic_path("2.5|-5,-1,2", "1.5|-8,-1,11", 0.5)
-// // const path2 = g.print_scenic_path("2.5|-5,-1,2", "2.5|-5,-1,2", 0.5)
-
-// // const path2 = g.print_scenic_path("1.75|-12,-7,0,4", "1.5|-12,0,2", 0.1)
-// console.log("path2:", path2)
 
 
 // Trying to run the code over all themes in the test set, and check if there is any output.
@@ -205,101 +176,94 @@ midiDirs.slice(0,2)
   let current_state = an.comp_obj2beat_rel_sq_mnn_states(comp)
   // console.log("current_state", current_state)
 
-  // Perhaps we could try to obtain the beginning and the end states of each measure, 
-  // and try to find scenic_path().
-  let beg_idx = 0
-  let end_idx = 0
-  let full_sc_pair = []
-  for(let i = 0; i < current_state.length; i ++){
-    if(i === current_state.length-1){
-      end_idx = i
-      const beginning_state = an.state2string(current_state[beg_idx].beat_rel_sq_MNN_state)
-      const end_state = an.state2string(current_state[end_idx].beat_rel_sq_MNN_state)
-      const path3 = g.print_scenic_path(beginning_state, end_state, 0.5)
-      // console.log("path3", path3)
-      if(path3 !== undefined){
-        const sc_pair = path2sc_pairs(path3, mainPath['sclName'])
-        full_sc_pair.push(current_state[beg_idx])
-        for(let j = 1; j < sc_pair.length - 1; j ++){
-          full_sc_pair.push(sc_pair[j])
+  for(let var_idx = 0; var_idx < 10; var_idx ++){
+    // Perhaps we could try to obtain the beginning and the end states of each measure, 
+    // and try to find scenic_path().
+    let beg_idx = 0
+    let end_idx = 0
+    let full_sc_pair = []
+    for(let i = 0; i < current_state.length; i ++){
+      if(i === current_state.length-1){
+        end_idx = i
+        const beginning_state = an.state2string(current_state[beg_idx].beat_rel_sq_MNN_state)
+        const end_state = an.state2string(current_state[end_idx].beat_rel_sq_MNN_state)
+        const path3 = g.print_scenic_path(beginning_state, end_state, 0.5)
+        // console.log("path3", path3)
+        if(path3 !== undefined){
+          const sc_pair = path2sc_pairs(path3, mainPath['sclName'])
+          full_sc_pair.push(current_state[beg_idx])
+          for(let j = 1; j < sc_pair.length - 1; j ++){
+            full_sc_pair.push(sc_pair[j])
+          }
+          full_sc_pair.push(current_state[end_idx])
         }
-        full_sc_pair.push(current_state[end_idx])
+        else{
+          for(let j = beg_idx; j <= end_idx; j ++){
+            full_sc_pair.push(current_state[j])
+          }
+        }
       }
-      else{
-        for(let j = beg_idx; j <= end_idx; j ++){
-          full_sc_pair.push(current_state[j])
+      else if(current_state[i+1].beat_rel_sq_MNN_state[0]<current_state[i].beat_rel_sq_MNN_state[0]){
+        end_idx = i
+        const beginning_state = an.state2string(current_state[beg_idx].beat_rel_sq_MNN_state)
+        const end_state = an.state2string(current_state[end_idx].beat_rel_sq_MNN_state)
+        const path3 = g.print_scenic_path(beginning_state, end_state, 0.5)
+        // console.log("path3", path3)
+        if(path3 !== undefined){
+          const sc_pair = path2sc_pairs(path3, mainPath['sclName'])
+          full_sc_pair.push(current_state[beg_idx])
+          for(let j = 1; j < sc_pair.length - 1; j ++){
+            full_sc_pair.push(sc_pair[j])
+          }
+          full_sc_pair.push(current_state[end_idx])
         }
+        else{
+          for(let j = beg_idx; j <= end_idx; j ++){
+            full_sc_pair.push(current_state[j])
+          }
+        }
+        beg_idx = i + 1
       }
     }
-    else if(current_state[i+1].beat_rel_sq_MNN_state[0]<current_state[i].beat_rel_sq_MNN_state[0]){
-      end_idx = i
-      const beginning_state = an.state2string(current_state[beg_idx].beat_rel_sq_MNN_state)
-      const end_state = an.state2string(current_state[end_idx].beat_rel_sq_MNN_state)
-      const path3 = g.print_scenic_path(beginning_state, end_state, 0.5)
-      // console.log("path3", path3)
-      if(path3 !== undefined){
-        const sc_pair = path2sc_pairs(path3, mainPath['sclName'])
-        full_sc_pair.push(current_state[beg_idx])
-        for(let j = 1; j < sc_pair.length - 1; j ++){
-          full_sc_pair.push(sc_pair[j])
-        }
-        full_sc_pair.push(current_state[end_idx])
-      }
-      else{
-        for(let j = beg_idx; j <= end_idx; j ++){
-          full_sc_pair.push(current_state[j])
-        }
-      }
-      beg_idx = i + 1
-    }
-  }
-  console.log(full_sc_pair.length)
-  // // ??? Decimal beat does not exist in 'pop909_train.json'.
-  // const beginning_state = an.state2string(current_state[0].beat_rel_sq_MNN_state)
-  // const end_state = an.state2string(current_state[current_state.length-1].beat_rel_sq_MNN_state)
-  // console.log("Beginning_state", beginning_state)
-  // console.log("End_state", end_state) 
-
-  // const path3 = g.print_scenic_path(beginning_state, end_state, 0.5)
-  // console.log("path3", path3)
-  // const sc_pair = path2sc_pairs(path3, mainPath['sclName'])
-  // console.log('sc_pair', sc_pair)
+    console.log(full_sc_pair.length)
 
 
-  let points = gn.get_points_from_states(full_sc_pair, param)
-  points = points.map(function(p){
-    p[param.indices.MNN] += full_sc_pair[0].context.tonic_pitch_closest[0] //60
-    p[param.indices.MPN] += full_sc_pair[0].context.tonic_pitch_closest[1] //60
-    p[param.indices.channel] = 0
-    return p
-  })
-  console.log("p", points.slice(0,5))
-
-  // Write tempo in MIDI.
-  const midiOut = new Midi()
-  let ntracks = 1
-  const tmp_out_points = points
-  const tmp_out_bpm = tmp_bpm
-  for (let i_track = 0; i_track < ntracks; i_track++){
-    const track = midiOut.addTrack()
-    track.name = "Piano"
-    track["channel"] = i_track
-    tmp_out_points.forEach(function(p){
-      track.addNote({
-        midi: p[param.noteIndices.mnnIndex],
-        time: param.scaleFactor*(p[param.noteIndices.ontimeIndex]),
-        duration: param.scaleFactor*p[param.noteIndices.durationIndex],
-        velocity: p[param.noteIndices.velocityIndex]
-      })
+    let points = gn.get_points_from_states(full_sc_pair, param)
+    points = points.map(function(p){
+      p[param.indices.MNN] += full_sc_pair[0].context.tonic_pitch_closest[0] //60
+      p[param.indices.MPN] += full_sc_pair[0].context.tonic_pitch_closest[1] //60
+      p[param.indices.channel] = 0
+      return p
     })
-  }
-  midiOut.header.tempos = tmp_bpm
-  const song_name = midiDir.split('.')[0]
+    // console.log("p", points.slice(0,5))
 
-  fs.writeFileSync(
-    path.join(mainPath["outputDir"], song_name + "_markovVar" + ".mid"),
-    new Buffer.from(midiOut.toArray())
-  )
+    // Write tempo in MIDI.
+    const midiOut = new Midi()
+    let ntracks = 1
+    const tmp_out_points = points
+    const tmp_out_bpm = tmp_bpm
+    for (let i_track = 0; i_track < ntracks; i_track++){
+      const track = midiOut.addTrack()
+      track.name = "Piano"
+      track["channel"] = i_track
+      tmp_out_points.forEach(function(p){
+        track.addNote({
+          midi: p[param.noteIndices.mnnIndex],
+          time: param.scaleFactor*(p[param.noteIndices.ontimeIndex]),
+          duration: param.scaleFactor*p[param.noteIndices.durationIndex],
+          velocity: p[param.noteIndices.velocityIndex]
+        })
+      })
+    }
+    midiOut.header.tempos = tmp_bpm
+    const song_name = midiDir.split('.')[0]
+
+    fs.writeFileSync(
+      path.join(mainPath["outputDir"], var_idx.toString(), song_name + "_markovVar" + ".mid"),
+      new Buffer.from(midiOut.toArray())
+    )
+  }
+  
 
   // const me = new mm.MidiExport(
   //   points,
