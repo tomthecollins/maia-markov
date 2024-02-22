@@ -145,14 +145,25 @@ console.log("Construction time!")
 console.log("comps.length:", comps.length)
 let stm = an.construct_stm(comps, param)
 console.log("stm.length:", stm.length)
+
+// let stm = require(
+//   path.join(mainPath["outputDir"], mainPath["outputFileName"] + "_wo_purne" + ".json")
+//   )
+// console.log("stm.length:", stm.length)
+
 stm = an.prune_stm(stm, param)
 console.log("pStm.length:", stm.length)
 // console.log("pStm[0].beat_mnn_state:", pStm[0].beat_mnn_state);
 // console.log("pStm.slice(0, 1):", pStm.slice(0, 1));
 fs.writeFileSync(
   path.join(mainPath["outputDir"], mainPath["outputFileName"] + ".json"),
-  JSON.stringify(stm, null, 2)
+  JSON.stringify(stm)
 )
+// fs.writeFileSync(
+//   path.join(mainPath["outputDir"], mainPath["outputFileName"] + ".json"),
+//   JSON.stringify(stm, null, 2)
+// )
+// writeStringToFile(stm, path.join(mainPath["outputDir"], mainPath["outputFileName"] + ".json"))
 
 // // We do not need "initial states" in variation generation project.
 // let initialDistbn = an.construct_initial(comps, param)
@@ -165,5 +176,5 @@ fs.writeFileSync(
 let scl = an.construct_scl(comps, param)
 fs.writeFileSync(
   path.join(mainPath["outputDir"], mainPath["outputFileName"] + "_scl.json"),
-  JSON.stringify(scl, null, 2)
+  JSON.stringify(scl)
 )

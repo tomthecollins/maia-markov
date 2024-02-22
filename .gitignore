@@ -20,6 +20,7 @@ node_modules/
 # Data directories
 examples/stm/
 examples/out/
+test/markov_out/
 
 # Data files maybe?
 # *.json
