@@ -8,6 +8,7 @@ const gn = new mm.Generator()
 const fs = require("fs")
 const { Midi } = require('@tonejs/midi')
 const sr = require('seed-random')
+const { setTimeout } = require('timers')
 
 // const seed = "hello683482"
 // sr(seed, {global: true})
@@ -120,7 +121,7 @@ dataEx.map(function(d){
   const contnCount = count_continuations(d.continuations, "beat_rel_sq_MNN_state")
   d.continuations.map(function(nb){
     if(d.beat_rel_sq_MNN_state[0]<nb.beat_rel_sq_MNN_state[0]){
-      g.add_edge(an.state2string(d.beat_rel_sq_MNN_state), an.state2string(nb.beat_rel_sq_MNN_state), 1/contnCount)
+      g.add_directed_edge(an.state2string(d.beat_rel_sq_MNN_state), an.state2string(nb.beat_rel_sq_MNN_state), 1/contnCount)
     }
   })
 })
@@ -137,13 +138,13 @@ midiDirs = midiDirs.filter(function(fnam){
     return true
   }
 })
-// Filter MIDIs in ['themeSample']
-midiDirs = midiDirs.filter(function(midiDir){
-    return mainPath["themeSample"].indexOf(midiDir) >= 0
-})
-// console.log(midiDirs)
+// // Filter MIDIs in ['themeSample']
+// midiDirs = midiDirs.filter(function(midiDir){
+//     return mainPath["themeSample"].indexOf(midiDir) >= 0
+// })
+// // console.log(midiDirs)
 
-midiDirs.slice(0,2)
+midiDirs
 .forEach(function(midiDir, jDir){
   // Obtain states from a theme.
   console.log("midiDir", midiDir)
