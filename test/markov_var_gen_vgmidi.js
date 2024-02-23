@@ -289,7 +289,7 @@ midiDirs
     const song_name = midiDir.split('.')[0]
     const splitVarName = song_name.split("_")
     let fid = splitVarName[0]
-    for(let i = 1; i < splitVarName.length-2; i ++){
+    for(let i = 1; i < splitVarName.length-1; i ++){
       fid += ("_" + splitVarName[i])
     }
     console.log("fid:", fid)
@@ -336,12 +336,12 @@ function path2sc_pairs(pathArr, sclFnam, maxOn){
     if(p in sclData){
       let length_sclData = sclData[p].length
       let sel_context = sclData[p][getRandomInt(length_sclData)]
-      if(tmpMaxOn < beat_rel_sq_MNN_state[0]){
-        tmpMaxOn = beat_rel_sq_MNN_state[0]
-      }
-      else{
-        break
-      }
+      // if(tmpMaxOn < beat_rel_sq_MNN_state[0]){
+      //   tmpMaxOn = beat_rel_sq_MNN_state[0]
+      // }
+      // else{
+      //   break
+      // }
       if(beat_rel_sq_MNN_state[0]>= maxOn){
         break
       }
