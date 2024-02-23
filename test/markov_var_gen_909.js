@@ -95,25 +95,34 @@ const dataEx = require(mainPath["inStm"])
 // numeric arrays to strings, use the counting performed during deduplication
 // to provide distances between states, and return ready for loading onto a
 // graph.
-const dataExStr = dataEx.map(function(st){
-  // Get count of continuations.
-  const contnCount = count_continuations(st.continuations, "beat_rel_sq_MNN_state")
-  const contnAndDist = contnCount[0].map(function(contn, idx){
-    return {
-      "beat_rel_sq_MNN_state": an.state2string(contn),
-      "dist": 1/contnCount[1][idx]
+// const dataExStr = dataEx.map(function(st){
+//   // Get count of continuations.
+//   const contnCount = count_continuations(st.continuations, "beat_rel_sq_MNN_state")
+//   const contnAndDist = contnCount[0].map(function(contn, idx){
+//     return {
+//       "beat_rel_sq_MNN_state": an.state2string(contn),
+//       "dist": 1/contnCount[1][idx]
+//     }
+//   })
+
+//   return {
+//     "beat_rel_sq_MNN_state": an.state2string(st.beat_rel_sq_MNN_state),
+//     "continuations": contnAndDist
+//   }
+// })
+// console.log("dataEx.length", dataEx.length)
+
+// let g = new mm.Graph(dataExStr, "beat_rel_sq_MNN_state", "continuations", "dist")
+
+let g = new mm.Graph()
+dataEx.map(function(d){
+  const contnCount = count_continuations(d.continuations, "beat_rel_sq_MNN_state")
+  d.continuations.map(function(nb){
+    if(d.beat_rel_sq_MNN_state[0]<nb.beat_rel_sq_MNN_state[0]){
+      g.add_directed_edge(an.state2string(d.beat_rel_sq_MNN_state), an.state2string(nb.beat_rel_sq_MNN_state), 1/contnCount)
     }
   })
-
-  return {
-    "beat_rel_sq_MNN_state": an.state2string(st.beat_rel_sq_MNN_state),
-    "continuations": contnAndDist
-  }
 })
-console.log("dataEx.length", dataEx.length)
-
-let g = new mm.Graph(dataExStr, "beat_rel_sq_MNN_state", "continuations", "dist")
-
 
 // Trying to run the code over all themes in the test set, and check if there is any output.
 let midiDirs = fs.readdirSync(path.join(mainPath["midi"], mainPath["midiDir"]))
@@ -126,13 +135,13 @@ midiDirs = midiDirs.filter(function(fnam){
     return true
   }
 })
-// Filter MIDIs in ['themeSample']
-midiDirs = midiDirs.filter(function(midiDir){
-    return mainPath["themeSample"].indexOf(midiDir) >= 0
-})
-// console.log(midiDirs)
+// // Filter MIDIs in ['themeSample']
+// midiDirs = midiDirs.filter(function(midiDir){
+//     return mainPath["themeSample"].indexOf(midiDir) >= 0
+// })
+// // console.log(midiDirs)
 
-midiDirs.slice(0,2)
+midiDirs
 .forEach(function(midiDir, jDir){
   // Obtain states from a theme.
   console.log("midiDir", midiDir)
@@ -189,7 +198,7 @@ midiDirs.slice(0,2)
         const end_state = an.state2string(current_state[end_idx].beat_rel_sq_MNN_state)
         const path3 = g.print_scenic_path(beginning_state, end_state, 0.5)
         // console.log("path3", path3)
-        if(path3 !== undefined){
+        if(path3 !== undefined && Math.random() > 0.5){
           const sc_pair = path2sc_pairs(path3, mainPath['sclName'])
           full_sc_pair.push(current_state[beg_idx])
           for(let j = 1; j < sc_pair.length - 1; j ++){
@@ -209,7 +218,7 @@ midiDirs.slice(0,2)
         const end_state = an.state2string(current_state[end_idx].beat_rel_sq_MNN_state)
         const path3 = g.print_scenic_path(beginning_state, end_state, 0.5)
         // console.log("path3", path3)
-        if(path3 !== undefined){
+        if(path3 !== undefined && Math.random() > 0.5){
           const sc_pair = path2sc_pairs(path3, mainPath['sclName'])
           full_sc_pair.push(current_state[beg_idx])
           for(let j = 1; j < sc_pair.length - 1; j ++){
@@ -286,17 +295,33 @@ function count_continuations(contn, stateType){
   return mu.count_rows(states, undefined, true)
 }
 
-function path2sc_pairs(pathArr, sclFnam){
+function path2sc_pairs(pathArr, sclFnam, maxOn){
   // Loading sclFile.
   const sclData = require(path.join(mainPath["sclPath"], sclFnam))
   let sc_pairs = []
   // Select one object randomly from "context"
-  pathArr.forEach(function(p){
+  let tmpMaxOn = -1
+  for(let i = 0; i < pathArr.length; i ++){
+    let p = pathArr[i]
+    // console.log("p", p)
     let beat_rel_sq_MNN_state = an.string2state(p)
-    let length_sclData = sclData[p].length
-    let sel_context = sclData[p][getRandomInt(length_sclData)]
-    sc_pairs.push({"beat_rel_sq_MNN_state": beat_rel_sq_MNN_state, "context": sel_context})
-  })
+    if(p in sclData){
+      let length_sclData = sclData[p].length
+      let sel_context = sclData[p][getRandomInt(length_sclData)]
+      // if(tmpMaxOn < beat_rel_sq_MNN_state[0]){
+      //   tmpMaxOn = beat_rel_sq_MNN_state[0]
+      // }
+      // else{
+      //   break
+      // }
+      if(beat_rel_sq_MNN_state[0]>= maxOn){
+        break
+      }
+      sc_pairs.push({"beat_rel_sq_MNN_state": beat_rel_sq_MNN_state, "context": sel_context})
+    }
+    
+  }
+  // console.log("sc_pairs", sc_pairs)
   return sc_pairs
 }
 
