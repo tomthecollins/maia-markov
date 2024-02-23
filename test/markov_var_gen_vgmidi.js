@@ -210,7 +210,7 @@ midiDirs
           console.error(error);
         }
         // console.log("path3", path3)
-        if(path3 !== undefined){
+        if(path3 !== undefined && Math.random() > 0.5){
           const sc_pair = path2sc_pairs(path3, mainPath['sclName'], current_state[end_idx].beat_rel_sq_MNN_state[0])
           full_sc_pair.push(current_state[beg_idx])
           for(let j = 1; j < sc_pair.length - 1; j ++){
@@ -239,7 +239,7 @@ midiDirs
           console.error(error);
         }
         // console.log("path3", path3)
-        if(path3 !== undefined){
+        if(path3 !== undefined && Math.random() > 0.5){
           const sc_pair = path2sc_pairs(path3, mainPath['sclName'])
           full_sc_pair.push(current_state[beg_idx])
           for(let j = 1; j < sc_pair.length - 1; j ++){
