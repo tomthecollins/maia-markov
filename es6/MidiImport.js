@@ -223,7 +223,14 @@ class MidiImport {
       ["synth pad", "pad 4 (choir)"],
       ["piano", "acoustic grand piano"],
       ["strings", "viola"],
-      ["brass", "muted trumpet"]
+      ["brass", "muted trumpet"],
+      ["ensemble", "synth voice"],
+      ["strings", "violin"],
+      ["guitar", "overdriven guitar"],
+      ["guitar", "acoustic guitar (nylon)"],
+      ["guitar", "distortion guitar"],
+      ["guitar", "electric guitar (muted)"],
+      ["piano", "bright acoustic piano"]
     ]
     let candidates = []
     // First phase of finding.

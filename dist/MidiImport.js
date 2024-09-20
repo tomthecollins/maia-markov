@@ -218,7 +218,7 @@ var MidiImport = function () {
     value: function find_vocal_track() {
       var self = this;
       var tracks = self.data.tracks;
-      var trg = [["reed", "alto sax"], ["synth lead", "lead 8 (bass + lead)"], ["reed", "clarinet"], ["reed", "soprano sax"], ["reed", "tenor sax"], ["reed", "baritone sax"], ["pipe", "flute"], ["brass", "french horn"], ["strings", "cello"], ["organ", "rock organ"], ["ensemble", "voice oohs"], ["guitar", "electric guitar (clean)"], ["guitar", "electric guitar (jazz)"], ["brass", "brass section"], ["reed", "oboe"], ["brass", "synthbrass 1"], ["guitar", "acoustic guitar (steel)"], ["synth pad", "pad 3 (polysynth)"], ["synth pad", "pad 4 (choir)"], ["piano", "acoustic grand piano"], ["strings", "viola"], ["brass", "muted trumpet"]];
+      var trg = [["reed", "alto sax"], ["synth lead", "lead 8 (bass + lead)"], ["reed", "clarinet"], ["reed", "soprano sax"], ["reed", "tenor sax"], ["reed", "baritone sax"], ["pipe", "flute"], ["brass", "french horn"], ["strings", "cello"], ["organ", "rock organ"], ["ensemble", "voice oohs"], ["guitar", "electric guitar (clean)"], ["guitar", "electric guitar (jazz)"], ["brass", "brass section"], ["reed", "oboe"], ["brass", "synthbrass 1"], ["guitar", "acoustic guitar (steel)"], ["synth pad", "pad 3 (polysynth)"], ["synth pad", "pad 4 (choir)"], ["piano", "acoustic grand piano"], ["strings", "viola"], ["brass", "muted trumpet"], ["ensemble", "synth voice"], ["strings", "violin"], ["guitar", "overdriven guitar"], ["guitar", "acoustic guitar (nylon)"], ["guitar", "distortion guitar"], ["guitar", "electric guitar (muted)"], ["piano", "bright acoustic piano"]];
       var candidates = [];
       // First phase of finding.
       tracks.forEach(function (trk, idx) {

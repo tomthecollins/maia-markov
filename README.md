@@ -67,6 +67,7 @@ TBD
 
 ## Release History
 
+* 0.1.2 Added some extra instruments to extract_vocal().
 * 0.1.1 Working on scenic_path().
 * 0.0.72-73 Fixed ontime correction bug.
 * 0.0.70-71 Switched unique_rows(ps, true) in for sort_rows(ps) in MidiImport, in order to address issue of MIDI files containing duplicate points.

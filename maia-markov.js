@@ -4,19 +4,19 @@ var mm = (function () {
   // Imports
   // import 'maia-util'
   // import mu from 'maia-util'
-  const mu = require('maia-util');
+  const mu$5 = require('maia-util');
   // const uu = require('uuid')
 
   // Constructor for Analyzer object
-  function Analyzer(){
+  function Analyzer$1(){
     // Workaround for JS context peculiarities.
     // var self = this;
     // Possible to return something.
     // return sth;
   }
   // Methods for Analyzer object
-  Analyzer.prototype = {
-    constructor: Analyzer,
+  Analyzer$1.prototype = {
+    constructor: Analyzer$1,
 
     comp_obj2beat_mnn_states: function(
       compObj, onAndOff = true, idxOn = 0, idxMNN = 1, idxDur = 3
@@ -38,13 +38,13 @@ var mm = (function () {
         return out_array;
       }
       else {
-        var D = mu.comp_obj2note_point_set(compObj);
-        var segE = mu.segment(D, onAndOff, idxOn, idxDur);
+        var D = mu$5.comp_obj2note_point_set(compObj);
+        var segE = mu$5.segment(D, onAndOff, idxOn, idxDur);
 
         // Iterate over segE, converting the ontime of each segment to a beat
         // number and extracting the MIDI note numbers.
         for (let i = 0; i < segE.length; i++){
-          var bar_beat = mu.bar_and_beat_number_of_ontime(
+          var bar_beat = mu$5.bar_and_beat_number_of_ontime(
             segE[i].ontime, compObj.timeSignatures
           );
           // This is beat of the bar in crotchet beats rounded to 5 decimal places.
@@ -54,7 +54,7 @@ var mm = (function () {
             MNN[j] = segE[i].points[j][idxMNN];
           }
           // Sort the MNN_rel entries and retain only the unique members.
-          var unqAndIdx = mu.unique_rows(MNN.map(function(m){ return [m] }));
+          var unqAndIdx = mu$5.unique_rows(MNN.map(function(m){ return [m] }));
           var unqMNN = unqAndIdx[0].map(function(arr){ return arr[0] });
           // Want to switch the mapping from this [[0, 2], [1], [3]] to [0, 1, 0, 2]
           var mapSwitch = new Array(MNN.length);
@@ -116,27 +116,27 @@ var mm = (function () {
         return out_array;
       }
       else {
-        var D = mu.comp_obj2note_point_set(compObj);
-        var segD = mu.segment(D, onAndOff, idxOn, idxDur);
+        var D = mu$5.comp_obj2note_point_set(compObj);
+        var segD = mu$5.segment(D, onAndOff, idxOn, idxDur);
 
         // console.log("compObj.keySignatures[0]:", compObj.keySignatures[0])
         var fifth_steps = compObj.keySignatures[0].fifthSteps;
         var mode = compObj.keySignatures[0].mode;
         var trans_pair_and_c_point_set = this.centre_point_set(
-          [fifth_steps, mode], mu.copy_point_set(D)
+          [fifth_steps, mode], mu$5.copy_point_set(D)
         );
         var trans_pair = trans_pair_and_c_point_set[0];
         // console.log('trans_pair:');
         // console.log(trans_pair);
         var E = trans_pair_and_c_point_set[1];
-        var segE = mu.segment(E, onAndOff, idxOn, idxDur);
+        var segE = mu$5.segment(E, onAndOff, idxOn, idxDur);
         // console.log('segments:');
         // console.log(segE);
 
         // Iterate over segE, converting the ontime of each segment to a beat
         // number and extracting the relative MIDI note numbers.
         for (let i = 0; i < segE.length; i++){
-          var bar_beat = mu.bar_and_beat_number_of_ontime(
+          var bar_beat = mu$5.bar_and_beat_number_of_ontime(
             segE[i].ontime, compObj.timeSignatures
           );
           // This is beat of the bar in crotchet beats rounded to 5 decimal places.
@@ -146,7 +146,7 @@ var mm = (function () {
             rel_MNN[j] = segE[i].points[j][idxMNN];
           }
           // Sort the rel_MNN entries and retain only the unique members.
-          var unqAndIdx = mu.unique_rows(rel_MNN.map(function(m){ return [m] }));
+          var unqAndIdx = mu$5.unique_rows(rel_MNN.map(function(m){ return [m] }));
           var unqRelMNN = unqAndIdx[0].map(function(arr){ return arr[0] });
           // Want to switch the mapping from this [[0, 2], [1], [3]] to [0, 1, 0, 2]
           var mapSwitch = new Array(rel_MNN.length);
@@ -210,27 +210,27 @@ var mm = (function () {
         return out_array;
       }
       else {
-        var D = mu.comp_obj2note_point_set(compObj);
-        var segD = mu.segment(D, onAndOff, idxOn, idxDur);
+        var D = mu$5.comp_obj2note_point_set(compObj);
+        var segD = mu$5.segment(D, onAndOff, idxOn, idxDur);
 
         // console.log("compObj.keySignatures[0]:", compObj.keySignatures[0])
         var fifth_steps = compObj.keySignatures[0].fifthSteps;
         var mode = compObj.keySignatures[0].mode;
         var trans_pair_and_c_point_set = this.centre_point_set(
-          [fifth_steps, mode], mu.copy_point_set(D)
+          [fifth_steps, mode], mu$5.copy_point_set(D)
         );
         var trans_pair = trans_pair_and_c_point_set[0];
         // console.log('trans_pair:');
         // console.log(trans_pair);
         var E = trans_pair_and_c_point_set[1];
-        var segE = mu.segment(E, onAndOff, idxOn, idxDur);
+        var segE = mu$5.segment(E, onAndOff, idxOn, idxDur);
         // console.log('segments:');
         // console.log(segE);
 
         // Iterate over segE, converting the ontime of each segment to a beat
         // number and extracting the relative MIDI note numbers.
         for (let i = 0; i < segE.length; i++){
-          var bar_beat = mu.bar_and_beat_number_of_ontime(
+          var bar_beat = mu$5.bar_and_beat_number_of_ontime(
             segE[i].ontime, compObj.timeSignatures
           );
           // This is beat of the bar in crotchet beats rounded to 5 decimal places.
@@ -254,7 +254,7 @@ var mm = (function () {
             rel_sq_MNN[j] = m;
           }
           // Sort the rel_sq_MNN entries and retain only the unique members.
-          var unqAndIdx = mu.unique_rows(rel_sq_MNN.map(function(m){ return [m] }));
+          var unqAndIdx = mu$5.unique_rows(rel_sq_MNN.map(function(m){ return [m] }));
           var unq_rel_sq_MNN = unqAndIdx[0].map(function(arr){ return arr[0] });
           // Want to switch the mapping from this [[0, 2], [1], [3]] to [0, 1, 0, 2]
           var mapSwitch = new Array(rel_sq_MNN.length);
@@ -393,7 +393,7 @@ var mm = (function () {
         for (let jstate = 0; jstate < state_context_pairs[iscr].length - 1; jstate++){
           // console.log('Curr state:');
           // console.log(state_context_pairs[iscr][jstate]["beat_MNN_state"]);
-          var rel_idx = mu.array_object_index_of_array(
+          var rel_idx = mu$5.array_object_index_of_array(
             stm, state_context_pairs[iscr][jstate][stateType], stateType
           );
           if (rel_idx >= 0){
@@ -474,7 +474,7 @@ var mm = (function () {
         pruneAns.push(true);
         return
       }
-      const unqIds = mu.get_unique(
+      const unqIds = mu$5.get_unique(
         stateConts["continuations"].map(function(c){ return c.context.piece_id })
       );
       // console.log("unqIds:", unqIds)
@@ -486,7 +486,7 @@ var mm = (function () {
       stateConts["continuations"].forEach(function(c){
         // Keep looking for each continuation of this state.
         // console.log("c[stateType]:", c[stateType])
-        const relIdx = mu.array_object_index_of_array(stm, c[stateType], stateType);
+        const relIdx = mu$5.array_object_index_of_array(stm, c[stateType], stateType);
         // console.log("relIdx:", relIdx)
         if (relIdx >= 0){
           self.prune_helper_2(stm[relIdx], stm, stateType, nosConsecutives, pruneAns, consecCount + 1);
@@ -498,7 +498,7 @@ var mm = (function () {
 
     prune_remover: function(state, stm, stateType){
       // Remove all occurrences of the dead-end state from continuations.
-      const relIdx = mu.array_object_index_of_array(stm, state, stateType);
+      const relIdx = mu$5.array_object_index_of_array(stm, state, stateType);
       stm = stm.map(function(sc){
         sc.continuations = sc.continuations.filter(function(c){
           return !c[stateType].equals(state)
@@ -512,7 +512,7 @@ var mm = (function () {
 
     note_point_set2comp_obj: function(
       ps, timeSigs = [{"barNo": 1, "topNo": 4, "bottomNo": 4, "ontime": 0}],
-      isPerc = false, f = mu.farey(4),
+      isPerc = false, f = mu$5.farey(4),
       onIdx = 0, mnnIdx = 1, durIdx = 3, chanIdx = 4, velIdx = 5
     ){
       var comp = {};
@@ -583,12 +583,12 @@ var mm = (function () {
           });
           // console.log("unquantised ps2.slice(0, 3):", ps2.slice(0, 3))
           if (f !== null){
-            ps2 = mu.farey_quantise(ps2, f, [onIdx, durIdx]);
-            ps2 = mu.unique_rows(ps2, true)[0];
+            ps2 = mu$5.farey_quantise(ps2, f, [onIdx, durIdx]);
+            ps2 = mu$5.unique_rows(ps2, true)[0];
           }
           // console.log("quantised ps2.slice(0, 3):", ps2.slice(0, 3))
           notes.push(...ps2.map(function(p){
-            var compNote = mu.timelapse_object();
+            var compNote = mu$5.timelapse_object();
             // var compNote = {}
             // compNote["id"] = uu()
             // but it has implications in terms of file size.
@@ -601,10 +601,10 @@ var mm = (function () {
               compNote["duration"] = p[durIdx];
             }
             compNote["offtime"] = compNote.ontime + compNote.duration;
-            var barBeat = mu.bar_and_beat_number_of_ontime(compNote.ontime, timeSigs);
+            var barBeat = mu$5.bar_and_beat_number_of_ontime(compNote.ontime, timeSigs);
             compNote["barOn"] = barBeat[0];
             compNote["beatOn"] = barBeat[1];
-            barBeat = mu.bar_and_beat_number_of_ontime(compNote.offtime, timeSigs);
+            barBeat = mu$5.bar_and_beat_number_of_ontime(compNote.offtime, timeSigs);
             compNote["barOff"] = barBeat[0];
             compNote["beatOff"] = barBeat[1];
             // compNote["pitch"] = note.name
@@ -626,7 +626,7 @@ var mm = (function () {
 
       var keySig;
       if (!isPerc){
-        keySig = mu.fifth_steps_mode(ps, mu.krumhansl_and_kessler_key_profiles);
+        keySig = mu$5.fifth_steps_mode(ps, mu$5.krumhansl_and_kessler_key_profiles);
       }
       else {
         keySig = ["C major", 1, 0, 0];
@@ -642,10 +642,10 @@ var mm = (function () {
       comp["timeSignatures"] = timeSigs;
       // Guess note names.
       notes.forEach(function (note) {
-        note["MPN"] = mu.guess_morphetic(note.MNN, keySig[2], keySig[3]);
-        note["pitch"] = mu.midi_note_morphetic_pair2pitch_and_octave(note.MNN, note.MPN);
+        note["MPN"] = mu$5.guess_morphetic(note.MNN, keySig[2], keySig[3]);
+        note["pitch"] = mu$5.midi_note_morphetic_pair2pitch_and_octave(note.MNN, note.MPN);
       });
-      comp["notes"] = notes.sort(mu.sort_points_asc);
+      comp["notes"] = notes.sort(mu$5.sort_points_asc);
       // comp["sequencing"] = [{"ontime": 0, "offtime": 16, "repetitionNo": 1}]
       comp["tempi"] = [{"barNo": 1, "ontime": 0, "bpm": 120, "tempo": ""}];
       // comp["tempi"] = [{"barNo": 1, "ontime": 0, "bpm": midi.header.bpm, "tempo": ""}]
@@ -668,7 +668,7 @@ var mm = (function () {
       for (i = 0; i < point_set.length; i++){
         MNNs.push(point_set[i][1]);
       }
-      var MNN_mu = mu.mean(MNNs);
+      var MNN_mu = mu$5.mean(MNNs);
       // console.log('Mean MNN:');
       // console.log(MNN_mu);
 
@@ -684,7 +684,7 @@ var mm = (function () {
       for (i = 0; i < n_tonal; i++){
         dist[i] = Math.abs(MNN_tonal[i] - MNN_mu);
       }
-      var min_stuff = mu.min_argmin(dist);
+      var min_stuff = mu$5.min_argmin(dist);
       var trans_pair = [
         MNN_MPN_pair[0] + 12*(min_stuff[1] - 5),
         MNN_MPN_pair[1] + 7*(min_stuff[1] - 5)
@@ -784,11 +784,79 @@ var mm = (function () {
       return initial;
     },
 
+    construct_scl: function(compObjs, param){
+      const stateType = param.stateType;
+      const onAndOff = param.onAndOff;
+      const squashRange = param.squashRangeMidi;
+      param.phraseBoundaryPropName;
+
+      // Could check that each of the compObjs have just one time signature, and
+      // that they are all equal to one another...
+
+      const nscr = compObjs.length;
+      const state_context_pairs = [];
+      for (let iscr = 0; iscr < nscr; iscr++){
+        switch (stateType){
+          case "beat_MNN_state":
+          state_context_pairs[iscr] = this.comp_obj2beat_mnn_states(
+            compObjs[iscr],
+            onAndOff
+          );
+          break;
+          case "beat_rel_MNN_state":
+          state_context_pairs[iscr] = this.comp_obj2beat_rel_mnn_states(
+            compObjs[iscr],
+            onAndOff
+          );
+          break;
+          case "beat_rel_sq_MNN_state":
+          state_context_pairs[iscr] = this.comp_obj2beat_rel_sq_mnn_states(
+            compObjs[iscr],
+            onAndOff,
+            squashRange
+          );
+          break;
+          case "lyrics_state":
+          state_context_pairs[iscr] = this.lyrics_obj2lyrics_states(compObjs[iscr]);
+          break;
+          default:
+          console.log("SHOULD NOT GET HERE!");
+        }
+        //if (iscr == 0){
+        //  console.log('state_context_pairs[iscr]:', state_context_pairs[iscr]);
+        //}
+      }
+
+      const scl = {};
+      for (let iscr = 0; iscr < nscr; iscr++){
+        for (let jstate = 0; jstate < state_context_pairs[iscr].length - 1; jstate++){
+          const scPair = state_context_pairs[iscr][jstate];
+          let key;
+          if (stateType == "lyrics_state"){
+            // State is already a string.
+            key = scPair[stateType];
+          }
+          else {
+            // State is not a string, but we can make it so.
+            key = this.state2string(scPair[stateType]);
+          }
+
+          if (scl[key] !== undefined){
+            scl[key].push(scPair["context"]);
+          }
+          else {
+            scl[key] = [scPair["context"]];
+          }
+        }
+      }
+      return scl
+    },
+
     prune_initial: function(initialDistbn, stm, param){
       const stateType = param.stateType;
 
       return initialDistbn.filter(function(scPair){
-        return mu.array_object_index_of_array(
+        return mu$5.array_object_index_of_array(
           stm, scPair[stateType], stateType
         ) >= 0
       })
@@ -885,20 +953,20 @@ var mm = (function () {
   };
 
   // Imports
-  const mu$1 = require('maia-util');
+  const mu$4 = require('maia-util');
   // import 'maia-util'
   // import mu from 'maia-util'
 
   // Constructor for Generator object
-  function Generator(){
+  function Generator$1(){
     // Workaround for JS context peculiarities.
     // var self = this;
     // Possible to return something.
     // return sth;
   }
   // Methods for Generator object
-  Generator.prototype = {
-    constructor: Generator,
+  Generator$1.prototype = {
+    constructor: Generator$1,
 
     // Tom Collins 6/4/2016.
     // Defining a modulo function because by default the modulus of a negative
@@ -934,13 +1002,13 @@ var mm = (function () {
     get_points_from_states: function(stateContextPairs, param){
       const self = this;
       const stateType = param.stateType;
-      const pointReconstruction = param.pointReconstruction;
+      param.pointReconstruction;
       const currTimeSig = param.timeSignatures[0];
       const crotchetBeatsInBar = 4*currTimeSig.topNo/currTimeSig.bottomNo;
-      const idxOn = param.indices.ontime;
+      param.indices.ontime;
       const idxMNN = param.indices.MNN;
       const idxMPN = param.indices.MPN;
-      const idxDur = param.indices.duration;
+      param.indices.duration;
       const idxChan = param.indices.channel;
       const idxVel = param.indices.velocity;
       // stateContextPairs, stateType = "beat_rel_sq_MNN_state",
@@ -992,27 +1060,27 @@ var mm = (function () {
           }
         });
       });
-      return points.sort(mu$1.lex_more)
+      return points.sort(mu$4.lex_more)
     },
 
     dovetail_durations: function(stateContextPairs, param){
       const stateType = param.stateType;
       const idxOn = param.indices.ontime;
-      const idxMNN = param.indices.MNN;
-      const idxMPN = param.indices.MPN;
+      param.indices.MNN;
+      param.indices.MPN;
       const idxDur = param.indices.duration;
-      const idxChan = param.indices.channel;
-      const idxVel = param.indices.velocity;
+      param.indices.channel;
+      param.indices.velocity;
       // Get a last offtime.
       // This is the ontime at which the final selected state began in the original
       // piece.
-      const ontimeOfLastState = mu$1.max_argmax(
+      const ontimeOfLastState = mu$4.max_argmax(
         stateContextPairs[stateContextPairs.length - 1].context.orig_points.map(function(p){
           return p[idxOn]
         })
       )[0];
       // This is the maximum offtime of a note in that state.
-      const offtimeOfLastState = mu$1.max_argmax(
+      const offtimeOfLastState = mu$4.max_argmax(
         stateContextPairs[stateContextPairs.length - 1].context.orig_points.map(function(p){
           return p[idxOn] + p[idxDur]
         })
@@ -1056,7 +1124,7 @@ var mm = (function () {
       stateContextPairs.map(function(s, idx){
         // console.log("s['beat_MNN_state']:", s['beat_MNN_state'])
         // Ontime where state began in original context.
-        const ontimeOfState = mu$1.max_argmax(
+        const ontimeOfState = mu$4.max_argmax(
           s.context.orig_points.map(function(p){
             return p[idxOn]
           })
@@ -1133,7 +1201,7 @@ var mm = (function () {
         if (idx > 0){
           let d = s[stateType][0] - stateContextPairs[idx - 1][stateType][0];
           if (d < 0){
-            d = mu$1.mod(d, crotchetBeatsInBar);
+            d = mu$4.mod(d, crotchetBeatsInBar);
           }
           else if (d == 0){
             d = crotchetBeatsInBar;
@@ -1191,7 +1259,7 @@ var mm = (function () {
       const stateType = param.stateType;
       const stm = param.stm;
       const initial = param.initial;
-      const nosConsecutives = param.nosConsecutives;
+      param.nosConsecutives;
       const ontimeUpperLimit = param.ontimeUpperLimit;
       let randCount = param.randCount;
       const idxOn = param.indices.ontime;
@@ -1209,13 +1277,13 @@ var mm = (function () {
         }
         else {
           // It's an initial distribution.
-          var lkState = mu$1.choose_one(initial);
+          var lkState = mu$4.choose_one(initial);
           randCount++;
         }
       }
       else {
         // Choose an initial state from beat 1 of the stm.
-        var lkState = mu$1.choose_one(
+        var lkState = mu$4.choose_one(
           stm.filter(function(sc){
             return sc[stateType][0] == 1
           })
@@ -1242,7 +1310,7 @@ var mm = (function () {
       // var nSt = 40; // This is the number of continuations.
       // for (iSt = 0; iSt < nSt; iSt++){
       while (lastOntime <= ontimeUpperLimit){
-        var relIdx = mu$1.array_object_index_of_array(stm, lkState, stateType);
+        var relIdx = mu$4.array_object_index_of_array(stm, lkState, stateType);
         // console.log('relIdx:', relIdx);
         if (relIdx == -1){
           console.log("Early stop: state was not found in the stm.");
@@ -1255,7 +1323,7 @@ var mm = (function () {
         // Use it to grab continuations and pick one at random.
         var conts = stm[relIdx].continuations;
         // console.log('stm[relIdx][stateType]:', stm[relIdx][stateType], 'conts.length:', conts.length);
-        var currCont = mu$1.choose_one(conts);
+        var currCont = mu$4.choose_one(conts);
         randCount++;
         stateCtxPairs.push(currCont);
 
@@ -1330,7 +1398,7 @@ var mm = (function () {
       const stateType = param.stateType;
       const stm = param.stm;
       const initial = param.initial;
-      const nosConsecutives = param.nosConsecutives;
+      param.nosConsecutives;
       const wordLimit = param.wordLimit;
       let randCount = param.randCount;
       // const defaultTimeSig = { "topNo": 4, "bottomNo": 4 }
@@ -1347,13 +1415,13 @@ var mm = (function () {
         }
         else {
           // It's an initial distribution.
-          var lkState = mu$1.choose_one(initial);
+          var lkState = mu$4.choose_one(initial);
           randCount++;
         }
       }
       else {
         // Choose an initial state from beat 1 of the stm.
-        var lkState = mu$1.choose_one(
+        var lkState = mu$4.choose_one(
           stm.filter(function(sc){
             return sc.context.index_in_line == 0
           })
@@ -1368,7 +1436,7 @@ var mm = (function () {
       lkState = lkState[stateType];
       console.log("stateCtxPairs:", stateCtxPairs);
       while (nosWords <= wordLimit){
-        var relIdx = mu$1.array_object_index_of_array(stm, lkState, stateType);
+        var relIdx = mu$4.array_object_index_of_array(stm, lkState, stateType);
         console.log('relIdx:', relIdx);
         if (relIdx == -1){
           console.log("Early stop: state was not found in the stm.");
@@ -1377,7 +1445,7 @@ var mm = (function () {
         // Use it to grab continuations and pick one at random.
         var conts = stm[relIdx].continuations;
         console.log('stm[relIdx][stateType]:', stm[relIdx][stateType], 'conts.length:', conts.length);
-        var currCont = mu$1.choose_one(conts);
+        var currCont = mu$4.choose_one(conts);
         randCount++;
         stateCtxPairs.push(currCont);
 
@@ -1400,32 +1468,32 @@ var mm = (function () {
   };
 
   // Imports
-  const mu$2 = require('maia-util');
+  const mu$3 = require('maia-util');
   // import get_points_from_states from './Generator'
 
   // Constructor for PatternGenerator object
-  function PatternGenerator(_onBgn, _onEnd, _midiBgn, _trans){
+  function PatternGenerator$1(_onBgn, _onEnd, _midiBgn, _trans){
     // Workaround for JS context peculiarities.
     // var self = this;
     this.onBgn = _onBgn; // Ontime of first segment of first occurrence.
     this.onEnd = _onEnd; // Ontime of last segment of first occurrence.
     this.midiBgn = _midiBgn; // MIDI note of lowest note in first segment.
     this.trans = _trans; // Translation vectors for all occurrences of the pattern.
-    this.an = new Analyzer;
-    this.gn = new Generator;
+    this.an = new Analyzer$1;
+    this.gn = new Generator$1;
     // Possible to return something.
     // return sth;
   }
   // Methods for PatternGenerator object
-  PatternGenerator.prototype = {
-    constructor: PatternGenerator,
+  PatternGenerator$1.prototype = {
+    constructor: PatternGenerator$1,
 
     generate_with_shortest_path: function(nCand, param){
       let self = this;
       // Shorten a few parameters names.
       const stateType = param.stateType;
       const g = param.graph;
-      const idxOn = param.indices.ontime;
+      param.indices.ontime;
 
       // Iterate until we have enough candidates.
       let stateSequences = new Array(nCand);
@@ -1563,7 +1631,7 @@ var mm = (function () {
       let winsAddressed = [];
       // Calculate max subset scores.
       discoveredPatterns.forEach(function(dp){
-        dp.maxArgmaxSubsetScore = mu$2.max_argmax(
+        dp.maxArgmaxSubsetScore = mu$3.max_argmax(
           dp.occurrences.map(function(o){ return o.subsetScore })
         );
       });
@@ -1575,7 +1643,7 @@ var mm = (function () {
       // Go through each occurrence of each pattern and see if we can address it.
       discoveredPatterns.forEach(function(dp){
         // Address the occurrence that received the maximum subset score.
-        let occ = dp.occurrences[dp.maxArgmaxSubsetScore[1]];
+        dp.occurrences[dp.maxArgmaxSubsetScore[1]];
         // If we take the example of B0, when we come to it, winsAddressed will
         // already look like this:
         // [[0, 8], [12, 20], [28, 36], [40, 48]]
@@ -1583,7 +1651,7 @@ var mm = (function () {
         // [[8, 12], [20, 28]],
         // acknwoledging that these are the time windows belonging to B0 that
         // still need to be addressed.
-        const winsToAddress = self.generate_time_windows(
+        self.generate_time_windows(
           o.ontimeBgn, o.ontimeEnd, winsAddressed
         );
 
@@ -1614,13 +1682,13 @@ var mm = (function () {
         }
         else {
           // It's an initial distribution.
-          stateCtxPair = mu$2.choose_one(aParam[strRequest]);
+          stateCtxPair = mu$3.choose_one(aParam[strRequest]);
           randCount++;
         }
       }
       else {
         // Choose an initial state from beat 1 of the stm.
-        stateCtxPair = mu$2.choose_one(
+        stateCtxPair = mu$3.choose_one(
           aParam.stm.filter(function(sc){
             return sc[stateType][0] == 1
           })
@@ -1643,13 +1711,13 @@ var mm = (function () {
         const state = self.an.string2state(stateStr);
         // Locate the state.
         if (idx == 0){ // Edge case
-          let relIdx = mu$2.array_object_index_of_array(
+          let relIdx = mu$3.array_object_index_of_array(
             aParam.initial, state, stateType
           );
           return aParam.initial[relIdx]
         }
         else if (idx == stateSeq.length - 1){ // Edge case
-          let relIdx = mu$2.array_object_index_of_array(
+          let relIdx = mu$3.array_object_index_of_array(
             aParam.final, state, stateType
           );
           return aParam.final[relIdx]
@@ -1657,7 +1725,7 @@ var mm = (function () {
         else { // Usual case
           // Locate previous state in stm. Then choose from among potentially many
           // continuations with the appropriate state.
-          let relIdx = mu$2.array_object_index_of_array(
+          let relIdx = mu$3.array_object_index_of_array(
             aParam.stm, self.an.string2state(stateSeq[idx - 1]), stateType
           );
           console.log("relIdx:", relIdx);
@@ -1666,7 +1734,7 @@ var mm = (function () {
             return cont[stateType].equals(state)
           });
           randCount++;
-          return mu$2.choose_one(candCont)
+          return mu$3.choose_one(candCont)
         }
       })
       // When allowing freedom in concatenating two shortest paths, one ending in
@@ -1700,7 +1768,7 @@ var mm = (function () {
    * @constructor
    * @template K, V
    */
-  function KeyValuePair(key, value) {
+  function KeyValuePair$1(key, value) {
     /**
      * The key.
      * @private {K}
@@ -1717,7 +1785,7 @@ var mm = (function () {
    * Gets the key.
    * @return {K} The key.
    */
-  KeyValuePair.prototype.getKey = function() {
+  KeyValuePair$1.prototype.getKey = function() {
     return this.key_;
   };
 
@@ -1726,7 +1794,7 @@ var mm = (function () {
    * Gets the value.
    * @return {V} The value.
    */
-  KeyValuePair.prototype.getValue = function() {
+  KeyValuePair$1.prototype.getValue = function() {
     return this.value_;
   };
 
@@ -1736,12 +1804,12 @@ var mm = (function () {
    * @return {!goog.structs.Node<K, V>} A new goog.structs.Node with the same
    *     key value pair.
    */
-  KeyValuePair.prototype.clone = function() {
-    return new KeyValuePair(this.key_, this.value_);
+  KeyValuePair$1.prototype.clone = function() {
+    return new KeyValuePair$1(this.key_, this.value_);
   };
 
   // Constructor for Vertex object
-  function Vertex(_name){
+  function Vertex$1(_name){
     // Workaround for JS context peculiarities.
     // var self = this;
     this.name = _name;
@@ -1756,8 +1824,8 @@ var mm = (function () {
   }
   // exports.Vertex = Vertex
   // Methods for Vertex object
-  Vertex.prototype = {
-    constructor: Vertex,
+  Vertex$1.prototype = {
+    constructor: Vertex$1,
 
     // Currently unused, e.g., because priorities are passed to PQ explicitly.
     compare_to: function(v){
@@ -1766,7 +1834,7 @@ var mm = (function () {
   };
 
   // Constructor for Edge object
-  function Edge(_u, _v, _w){
+  function Edge$1(_u, _v, _w){
     // Workaround for JS context peculiarities.
     // var self = this;
     this.u = _u;
@@ -1776,13 +1844,15 @@ var mm = (function () {
     // return sth;
   }
   // Methods for Edge object
-  Edge.prototype = {
-    constructor: Edge,
+  Edge$1.prototype = {
+    constructor: Edge$1,
 
     // sth: function(){}
   };
 
   // Adapted from Google's Closure library.
+  // https://github.com/google/closure-library/blob/master/closure/goog/structs/heap.js#L44
+
 
   /**
    * Class for a Heap data structure.
@@ -1792,7 +1862,7 @@ var mm = (function () {
    * @constructor
    * @template K, V
    */
-  function Heap(opt_heap) {
+  function Heap$1(opt_heap) {
     /**
      * The nodes of the heap.
      * @private
@@ -1807,7 +1877,7 @@ var mm = (function () {
   /**
    * Restores heap order property. This one added by me.
    */
-  Heap.prototype.heapify = function() {
+  Heap$1.prototype.heapify = function() {
     for (let i = Math.floor(this.nodes_.length/2); i >= 0; i--) {
       this.moveDown_(i);
     }
@@ -1816,7 +1886,7 @@ var mm = (function () {
   /**
    * Removes a specifiable value. This one added by me.
    */
-  Heap.prototype.removeValue = function(value) {
+  Heap$1.prototype.removeValue = function(value) {
     const relIdx = this.containsValue(value);
     if (relIdx >= 0){
       this.nodes_.splice(relIdx, -1);
@@ -1830,8 +1900,8 @@ var mm = (function () {
    * @param {K} key The key.
    * @param {V} value The value.
    */
-  Heap.prototype.insert = function(key, value) {
-    var node = new KeyValuePair(key, value);
+  Heap$1.prototype.insert = function(key, value) {
+    var node = new KeyValuePair$1(key, value);
     var nodes = this.nodes_;
     nodes.push(node);
     this.moveUp_(nodes.length - 1);
@@ -1842,9 +1912,9 @@ var mm = (function () {
    * Adds multiple key-value pairs from another goog.structs.Heap or Object
    * @param {goog.structs.Heap|Object} heap Object containing the data to add.
    */
-  Heap.prototype.insertAll = function(heap) {
+  Heap$1.prototype.insertAll = function(heap) {
     var keys, values;
-    if (heap instanceof Heap) {
+    if (heap instanceof Heap$1) {
       keys = heap.getKeys();
       values = heap.getValues();
 
@@ -1854,7 +1924,7 @@ var mm = (function () {
       if (this.getCount() <= 0) {
         var nodes = this.nodes_;
         for (var i = 0; i < keys.length; i++) {
-          nodes.push(new KeyValuePair(keys[i], values[i]));
+          nodes.push(new KeyValuePair$1(keys[i], values[i]));
         }
         return;
       }
@@ -1874,7 +1944,7 @@ var mm = (function () {
    * @return {V} The value removed from the root of the heap.  Returns
    *     undefined if the heap is empty.
    */
-  Heap.prototype.remove = function() {
+  Heap$1.prototype.remove = function() {
     var nodes = this.nodes_;
     // console.log("this.nodes_.length before removal:", this.nodes_.length)
     var count = nodes.length;
@@ -1898,7 +1968,7 @@ var mm = (function () {
    * @return {V} The value at the root of the heap. Returns
    *     undefined if the heap is empty.
    */
-  Heap.prototype.peek = function() {
+  Heap$1.prototype.peek = function() {
     var nodes = this.nodes_;
     if (nodes.length == 0) {
       return undefined;
@@ -1912,7 +1982,7 @@ var mm = (function () {
    * @return {K} The key at the root of the heap. Returns undefined if the
    *     heap is empty.
    */
-  Heap.prototype.peekKey = function() {
+  Heap$1.prototype.peekKey = function() {
     return this.nodes_[0] && this.nodes_[0].getKey();
   };
 
@@ -1922,7 +1992,7 @@ var mm = (function () {
    * @param {number} index The index of the node to move down.
    * @private
    */
-  Heap.prototype.moveDown_ = function(index) {
+  Heap$1.prototype.moveDown_ = function(index) {
     var nodes = this.nodes_;
     var count = nodes.length;
 
@@ -1958,7 +2028,7 @@ var mm = (function () {
    * @param {number} index The index of the node to move up.
    * @private
    */
-  Heap.prototype.moveUp_ = function(index) {
+  Heap$1.prototype.moveUp_ = function(index) {
     var nodes = this.nodes_;
     var node = nodes[index];
 
@@ -1983,7 +2053,7 @@ var mm = (function () {
    * @return {number} The index of the left child.
    * @private
    */
-  Heap.prototype.getLeftChildIndex_ = function(index) {
+  Heap$1.prototype.getLeftChildIndex_ = function(index) {
     return index * 2 + 1;
   };
 
@@ -1994,7 +2064,7 @@ var mm = (function () {
    * @return {number} The index of the right child.
    * @private
    */
-  Heap.prototype.getRightChildIndex_ = function(index) {
+  Heap$1.prototype.getRightChildIndex_ = function(index) {
     return index * 2 + 2;
   };
 
@@ -2005,7 +2075,7 @@ var mm = (function () {
    * @return {number} The index of the parent.
    * @private
    */
-  Heap.prototype.getParentIndex_ = function(index) {
+  Heap$1.prototype.getParentIndex_ = function(index) {
     return (index - 1) >> 1;
   };
 
@@ -2014,7 +2084,7 @@ var mm = (function () {
    * Gets the values of the heap.
    * @return {!Array<V>} The values in the heap.
    */
-  Heap.prototype.getValues = function() {
+  Heap$1.prototype.getValues = function() {
     var nodes = this.nodes_;
     var rv = [];
     var l = nodes.length;
@@ -2029,7 +2099,7 @@ var mm = (function () {
    * Gets the keys of the heap.
    * @return {!Array<K>} The keys in the heap.
    */
-  Heap.prototype.getKeys = function() {
+  Heap$1.prototype.getKeys = function() {
     var nodes = this.nodes_;
     var rv = [];
     var l = nodes.length;
@@ -2045,7 +2115,7 @@ var mm = (function () {
    * @param {V} val The value to check for.
    * @return {boolean} Whether the heap contains the value.
    */
-  Heap.prototype.containsValue = function(val) {
+  Heap$1.prototype.containsValue = function(val) {
     return this.nodes_.findIndex(function(n){
       return n.getValue() == val
     })
@@ -2059,7 +2129,7 @@ var mm = (function () {
    * @param {K} key The key to check for.
    * @return {boolean} Whether the heap contains the key.
    */
-  Heap.prototype.containsKey = function(key) {
+  Heap$1.prototype.containsKey = function(key) {
     return this.nodes_.findIndex(function(n){
       return n.getKey() == key
     })
@@ -2073,8 +2143,8 @@ var mm = (function () {
    * @return {!goog.structs.Heap} A new goog.structs.Heap with the same key-value
    *     pairs.
    */
-  Heap.prototype.clone = function() {
-    return new Heap(this);
+  Heap$1.prototype.clone = function() {
+    return new Heap$1(this);
   };
 
 
@@ -2082,7 +2152,7 @@ var mm = (function () {
    * The number of key-value pairs in the map
    * @return {number} The number of pairs.
    */
-  Heap.prototype.getCount = function() {
+  Heap$1.prototype.getCount = function() {
     return this.nodes_.length;
   };
 
@@ -2091,7 +2161,7 @@ var mm = (function () {
    * Returns true if this heap contains no elements.
    * @return {boolean} Whether this heap contains no elements.
    */
-  Heap.prototype.isEmpty = function() {
+  Heap$1.prototype.isEmpty = function() {
     return this.nodes_.length == 0
     // return goog.array.isEmpty(this.nodes_);
   };
@@ -2100,12 +2170,16 @@ var mm = (function () {
   /**
    * Removes all elements from the heap.
    */
-  Heap.prototype.clear = function() {
+  Heap$1.prototype.clear = function() {
     this.nodes_ = [];
     // goog.array.clear(this.nodes_);
   };
 
   // Adapted from Google's Closure library.
+  // https://github.com/google/closure-library/blob/master/closure/goog/structs/priorityqueue.js#L34
+  // Would be better if PQ inherited Heap rather than using it, but this'll do for
+  // now.
+
 
   /**
    * Class for Priority Queue datastructure.
@@ -2115,8 +2189,8 @@ var mm = (function () {
    * @template VALUE
    * @final
    */
-  function PriorityQueue() {
-    this.heap = new Heap();
+  function PriorityQueue$1() {
+    this.heap = new Heap$1();
     // goog.structs.Heap.call(this);
   }// goog.inherits(goog.structs.PriorityQueue, goog.structs.Heap);
 
@@ -2127,7 +2201,7 @@ var mm = (function () {
    *     means a higher priority.
    * @param {VALUE} value The value.
    */
-  PriorityQueue.prototype.enqueue = function(priority, value) {
+  PriorityQueue$1.prototype.enqueue = function(priority, value) {
     this.heap.insert(priority, value);
   };
 
@@ -2137,7 +2211,7 @@ var mm = (function () {
    * @return {VALUE} The element at the head of this queue. Returns undefined if
    *     the queue is empty.
    */
-  PriorityQueue.prototype.dequeue = function() {
+  PriorityQueue$1.prototype.dequeue = function() {
     // console.log("this.heap.getCount() from beginning of dequeue():", this.heap.getCount())
     const value = this.heap.remove();
     // console.log("this.heap.getCount() from end of dequeue():", this.heap.getCount())
@@ -2146,10 +2220,10 @@ var mm = (function () {
   };
 
   // Imports
-  const mu$3 = require('maia-util');
+  require('maia-util');
 
   // Constructor for Graph object
-  function Graph(arr, vtxStr, nbsStr, distStr){
+  function Graph$1(arr, vtxStr, nbsStr, distStr){
     // If supplied with an input array, this constructor fills the graph with
     // directed edges by default.
     this.vertexMap = {};
@@ -2171,26 +2245,26 @@ var mm = (function () {
     // return sth;
   }
   // Methods for Graph object
-  Graph.prototype = {
-    constructor: Graph,
+  Graph$1.prototype = {
+    constructor: Graph$1,
 
     add_edge: function(start, end, w){
       const u = this.get_vertex(start);
       const v = this.get_vertex(end);
-      u.nbs.push(new Edge(u, v, w));
-      v.nbs.push(new Edge(v, u, w));
+      u.nbs.push(new Edge$1(u, v, w));
+      v.nbs.push(new Edge$1(v, u, w));
     },
 
     add_directed_edge: function(start, end, w){
       const u = this.get_vertex(start);
       const v = this.get_vertex(end);
-      u.nbs.push(new Edge(u, v, w));
+      u.nbs.push(new Edge$1(u, v, w));
     },
 
     get_vertex: function(name){
       let v = this.vertexMap[name];
       if (v == undefined){
-        v = new Vertex(name);
+        v = new Vertex$1(name);
         this.vertexMap[name] = v;
       }
       return v
@@ -2293,7 +2367,7 @@ var mm = (function () {
       }
 
       this.reset();
-      let q = new PriorityQueue();
+      let q = new PriorityQueue$1();
       startVertex.dist = 0;
       q.enqueue(startVertex.dist, startVertex);
       // console.log("q:", q)
@@ -2330,7 +2404,7 @@ var mm = (function () {
       return rv.reverse()
     },
 
-    scenic_path: function(startName, loveOfScenery, seed){
+    scenic_path: function(startName, loveOfScenery){
       let startVertex = this.vertexMap[startName];
       if (startVertex == undefined){
         console.log("Error: start vertex not found.");
@@ -2338,7 +2412,7 @@ var mm = (function () {
       }
 
       this.reset();
-      let q = new PriorityQueue();
+      let q = new PriorityQueue$1();
       startVertex.dist = 0;
       q.enqueue(startVertex.dist, startVertex);
       // console.log("q:", q)
@@ -2348,36 +2422,30 @@ var mm = (function () {
         if (u.visited) continue
         u.visited = true;
         // console.log(u.name + " " + u.dist + " " + ((u.prev==null)?"":u.prev.name))
-        // console.log("u.nbs:", u.nbs)
-        const shuffled = mu$3.sample_without_replacement(u.nbs, u.nbs.length);
-        // console.log("shuffled:", shuffled)
-        shuffled.map(function(nb){
+        u.nbs.map(function(nb){
           let v = nb.v;
-
-          // console.log("u.name:", u.name, "v.name", v.name)
-          // console.log(v.dist, u.dist, nb.w)
-          const rand = Math.random();
-
           if (
+            // The next line is intended to avoid the undefined error in beginning
+            // to construct the shortest path.
             v.dist === Infinity ||
-            (v.dist > u.dist + nb.w && rand > loveOfScenery)
+            (
+              // If true, there's a better way to get to vertex v.
+              (v.dist > u.dist + nb.w) &&
+              Math.random() > loveOfScenery
+            )
           ){
-            console.log("A more efficient route will be used.");
+            // Update the heap with the more efficient route.
             q.heap.removeValue(v);
             v.dist = u.dist + nb.w;
             v.prev = u;
-            console.log("u.name:", u.name);
             q.enqueue(v.dist, v);
-          }
-          else {
-            console.log("A more efficient route will NOT be used.");
           }
         });
       }
     },
 
-    print_scenic_path: function(startName, endName, loveOfScenery, seed){
-      this.scenic_path(startName, loveOfScenery, seed);
+    print_scenic_path: function(startName, endName, loveOfScenery){
+      this.scenic_path(startName, loveOfScenery);
       let relVtx = this.get_vertex(endName);
       if (!relVtx.visited){
         // These two vertices are not connected.
@@ -2405,22 +2473,22 @@ var mm = (function () {
 
   // Imports
   // import fs
-  const fs = require('fs');
+  const fs$3 = require('fs');
   const pa = require('path');
-  const { Midi } = require('@tonejs/midi');
-  const mu$4 = require('maia-util');
+  const { Midi: Midi$1 } = require('@tonejs/midi');
+  const mu$2 = require('maia-util');
 
   /**
    * Class for importing MIDI files and extracting information from them.
    */
-  class MidiImport {
+  let MidiImport$1 = class MidiImport {
     /**
      * Constructor for the MidiImport class.
      * @param {string} _fpath - The file path of the MIDI file.
      * @param {function} _f - The function for returning the nth Farey set.
      * @param {number} _anc - The anacrusis value.
      */
-    constructor(_fpath, _f = mu$4.farey(4), _anc = 0){
+    constructor(_fpath, _f = mu$2.farey(4), _anc = 0){
       // Workaround for JS context peculiarities.
       // var self = this;
       this.fpath = _fpath;
@@ -2572,7 +2640,7 @@ var mm = (function () {
             Math.round(1000*n.velocity)/1000
           ]
         });
-        const seg = mu$4.segment(points, false);
+        const seg = mu$2.segment(points, false);
         let homoCount = 0;
         seg.forEach(function(s){
           if (s.points.length >= 2){
@@ -2627,7 +2695,14 @@ var mm = (function () {
         ["synth pad", "pad 4 (choir)"],
         ["piano", "acoustic grand piano"],
         ["strings", "viola"],
-        ["brass", "muted trumpet"]
+        ["brass", "muted trumpet"],
+        ["ensemble", "synth voice"],
+        ["strings", "violin"],
+        ["guitar", "overdriven guitar"],
+        ["guitar", "acoustic guitar (nylon)"],
+        ["guitar", "distortion guitar"],
+        ["guitar", "electric guitar (muted)"],
+        ["piano", "bright acoustic piano"]
       ];
       let candidates = [];
       // First phase of finding.
@@ -2696,7 +2771,7 @@ var mm = (function () {
           });
           console.log("points.length:", points.length);
           console.log("points.slice(0, 5):", points.slice(0, 5));
-          const seg = mu$4.segment(points, false);
+          const seg = mu$2.segment(points, false);
           let monoCount = 0;
           seg.forEach(function(s){
             if (s.points.length < 2){
@@ -2706,7 +2781,7 @@ var mm = (function () {
           return monoCount/seg.length
         });
         console.log("monophonyScores:", monophonyScores);
-        const ma = mu$4.max_argmax(monophonyScores);
+        const ma = mu$2.max_argmax(monophonyScores);
         return candidates[ma[1]]
       }
 
@@ -2755,7 +2830,7 @@ var mm = (function () {
       // this.points.map(function(p){
       //   p.splice(2, 0, mu.guess_morphetic(p[1], fsm[2], fsm[3]))
       // })
-      const an = new Analyzer;
+      const an = new Analyzer$1;
       let comp = an.note_point_set2comp_obj(
         this.points, this.timeSigs, false, f, 0, 1, 2, 3, 4
       );
@@ -2791,7 +2866,7 @@ var mm = (function () {
         const props = Object.keys(track.controlChanges);
         props.forEach(function(p){
           ccCurrTrack[p] = track.controlChanges[p].map(function(c){
-            const obj = mu$4.timelapse_object();
+            const obj = mu$2.timelapse_object();
             obj.ontime = Math.round(100000*(c.ticks/self.data.header.ppq - anacrusis))/100000;
             // What about the anacrusis effect on onset?!
             obj.onset = Math.round(100000*c.time)/100000;
@@ -2809,8 +2884,8 @@ var mm = (function () {
      * @return {object} midiData - The data from the MIDI file.
      */
     get_data(){
-      const midiData = fs.readFileSync(this.fpath);
-      return new Midi(midiData)
+      const midiData = fs$3.readFileSync(this.fpath);
+      return new Midi$1(midiData)
     }
 
     /**
@@ -2821,7 +2896,7 @@ var mm = (function () {
      */
     get_phrase_boundary_ontimes(restDur = 1, property = "offtime"){
       let pbo = [];
-      const segs = mu$4.segment(this.points, true, 0, 2);
+      const segs = mu$2.segment(this.points, true, 0, 2);
       segs.forEach(function(seg, idx){
         if (seg.points.length == 0 && seg.offtime - seg.ontime >= restDur){
           pbo.push(seg[property]);
@@ -2852,7 +2927,7 @@ var mm = (function () {
           ]);
         });
       });
-      const unqPoints = mu$4.unique_rows(points, true)[0];
+      const unqPoints = mu$2.unique_rows(points, true)[0];
       const minOntime = unqPoints[0][0];
       if (this.anacrusis === "Shift to zero"){
         unqPoints.forEach(function(pt){
@@ -2916,16 +2991,16 @@ var mm = (function () {
       console.log("timeSigs:", timeSigs);
       return timeSigs
     }
-  }
+  };
 
   // Imports
   // import fs
-  const fs$1 = require('fs');
-  const { Midi: Midi$1 } = require('@tonejs/midi');
-  const mu$5 = require('maia-util');
+  const fs$2 = require('fs');
+  const { Midi } = require('@tonejs/midi');
+  const mu$1 = require('maia-util');
 
   // Constructor for MidiExport object
-  function MidiExport(
+  function MidiExport$1(
     _points, _controlChanges, _fpath, _param = {
       "scaleFactor": 1,
       "timeSigTopNo": 4,
@@ -2971,13 +3046,13 @@ var mm = (function () {
     // return sth;
   }
   // Methods for MidiExport object
-  MidiExport.prototype = {
-    constructor: MidiExport,
+  MidiExport$1.prototype = {
+    constructor: MidiExport$1,
 
     export: function(){
       const self = this;
       let ontimeCorrection = 0;
-      const minOntime = mu$5.min_argmin(
+      const minOntime = mu$1.min_argmin(
         self.points.map(function(p){ return p[self.ontimeIndex] })
       )[0];
       if (minOntime < 0){
@@ -3007,7 +3082,7 @@ var mm = (function () {
       }
 
 
-      let midi = new Midi$1();
+      let midi = new Midi();
       // "Works" but actually changes nothing!:
       // midi.header.setTempo(240)
       // console.log("midi.header:", midi.header)
@@ -3035,7 +3110,7 @@ var mm = (function () {
           });
         }
       }
-      fs$1.writeFileSync(
+      fs$2.writeFileSync(
         self.fpath,
         new Buffer.from(midi.toArray())
       );
@@ -3045,13 +3120,13 @@ var mm = (function () {
   };
 
   // Imports
-  const fs$2 = require('fs');
+  const fs$1 = require('fs');
   const xmlpstr = require('xml2js').parseString;
   const convert = require('xml-js').xml2js;
-  const mu$6 = require('maia-util');
+  const mu = require('maia-util');
 
   // Constructor for XmlImport object
-  function XmlImport(_fpath){
+  function XmlImport$1(_fpath){
     // Workaround for JS context peculiarities.
     // const self = this;
     this.fpath = _fpath;
@@ -3069,11 +3144,11 @@ var mm = (function () {
     // return sth;
   }
   // Methods for XmlImport object
-  XmlImport.prototype = {
-    constructor: XmlImport,
+  XmlImport$1.prototype = {
+    constructor: XmlImport$1,
 
     get_data: function(){
-      return fs$2.readFileSync(this.fpath, "utf8")
+      return fs$1.readFileSync(this.fpath, "utf8")
     },
 
     xml2json: function(){
@@ -3118,7 +3193,7 @@ var mm = (function () {
       });
       // console.log("possNameIdx:", possNameIdx)
       if (possNameIdx >= 0){
-        name = [mu$6.timelapse_object()];
+        name = [mu.timelapse_object()];
         name[0].name = credit[possNameIdx].text;
         credit.splice(possNameIdx, 1);
       }
@@ -3131,7 +3206,7 @@ var mm = (function () {
       });
       // console.log("possCopyrightIdx:", possCopyrightIdx)
       if (possCopyrightIdx >= 0){
-        copyright = [mu$6.timelapse_object()];
+        copyright = [mu.timelapse_object()];
         copyright[0].displayName = credit[possCopyrightIdx].text;
         credit.splice(possCopyrightIdx, 1);
       }
@@ -3141,7 +3216,7 @@ var mm = (function () {
       });
       // console.log("possComposerIdx:", possComposerIdx)
       if (possComposerIdx >= 0){
-        composer = [mu$6.timelapse_object()];
+        composer = [mu.timelapse_object()];
         composer[0].displayName = credit[possComposerIdx].text;
         credit.splice(possComposerIdx, 1);
       }
@@ -3151,13 +3226,13 @@ var mm = (function () {
       });
       // console.log("possLyricistIdx:", possLyricistIdx)
       if (possLyricistIdx >= 0){
-        lyricist = [mu$6.timelapse_object()];
+        lyricist = [mu.timelapse_object()];
         lyricist[0].displayName = credit[possLyricistIdx].text;
         credit.splice(possLyricistIdx, 1);
       }
       else { lyricist = []; }
       remark = credit.map(function(c){
-        const r = mu$6.timelapse_object();
+        const r = mu.timelapse_object();
         r.remark = c.text;
         return r
       });
@@ -3180,7 +3255,7 @@ var mm = (function () {
       });
       // Use it to define layers.
       sp.forEach(function(obj){
-        const currLayer = mu$6.timelapse_object();
+        const currLayer = mu.timelapse_object();
         currLayer.type = "instrument";
         currLayer.vexflow = {};
         currLayer.vexflow.id = obj.attributes.id;
@@ -3239,12 +3314,12 @@ var mm = (function () {
               currLayer.vexflow[propName] = el.elements[0].text;
             }
           });
-          currLayer.vexflow.clef = mu$6.clef_sign_and_line2clef_name(
+          currLayer.vexflow.clef = mu.clef_sign_and_line2clef_name(
             currLayer.vexflow.clefSign,
             currLayer.vexflow.clefLine,
             currLayer.vexflow.clefOctaveChange
           );
-          layer.push(mu$6.copy_array_object(currLayer));
+          layer.push(mu.copy_array_object(currLayer));
           staffNo++;
         });
       });
@@ -3259,7 +3334,7 @@ var mm = (function () {
       // Time signatures need more work.
       // Just putting in a default for now.
       ////
-      const timeSig = mu$6.timelapse_object();
+      const timeSig = mu.timelapse_object();
       timeSig.barNo = 1, timeSig.topNo = 4, timeSig.bottomNo = 4, timeSig.ontime = 0;
       timeSignatures = [timeSig];
 
@@ -3302,7 +3377,7 @@ var mm = (function () {
             let intDur;
             switch(obj.name){
               case "attributes":
-              let el = obj.elements.forEach(function(obj2){
+              obj.elements.forEach(function(obj2){
                 switch(obj2.name){
                   case "divisions":
                   if (divisions !== undefined){
@@ -3330,7 +3405,7 @@ var mm = (function () {
 
                   break
                   case "key":
-                  const currKey = mu$6.timelapse_object();
+                  const currKey = mu.timelapse_object();
     							currKey.barNo = measureNumber + (anacrusis === 0);
                   let possFifths = obj2.elements.find(function(obj){
                     return obj.name === "fifths"
@@ -3346,7 +3421,7 @@ var mm = (function () {
                     possMode = possMode.elements[0].text;
                   }
                   currKey.mode = possMode || 0;
-                  currKey.keyName = mu$6.nos_symbols_and_mode2key_name(
+                  currKey.keyName = mu.nos_symbols_and_mode2key_name(
                     currKey.fifths, currKey.mode
                   );
 
@@ -3407,7 +3482,7 @@ var mm = (function () {
               });
               break
               case "note":
-              const currNote = mu$6.timelapse_object();
+              const currNote = mu.timelapse_object();
               let restTf = false, graceTf = false, cueTf = false, tieArr = [];
               obj.elements.forEach(function(obj){
                 switch(obj.name){
@@ -3418,7 +3493,7 @@ var mm = (function () {
                   });
                   // console.log("xmlPitch:", xmlPitch)
                   currNote.pitch = self.xml_pitch2pitch_class_and_octave(xmlPitch);
-                  const mnnMpn = mu$6.pitch_and_octave2midi_note_morphetic_pair(currNote.pitch);
+                  const mnnMpn = mu.pitch_and_octave2midi_note_morphetic_pair(currNote.pitch);
                   currNote.MNN = mnnMpn[0];
                   currNote.MPN = mnnMpn[1];
                   break
@@ -3437,7 +3512,7 @@ var mm = (function () {
                   case "voice":
                   // console.log("Got to a voice!")
                   // console.log("obj.elements:", obj.elements)
-                  const staffVoiceNos = mu$6.staff_voice_xml2staff_voice_json(
+                  const staffVoiceNos = mu.staff_voice_xml2staff_voice_json(
                     obj.elements[0].text,
                     staffNosForId,
                     partIdx
@@ -3506,10 +3581,10 @@ var mm = (function () {
                 let duration = Math.round(intDur/divisions*100000)/100000;
                 // This is offtime in crotchet beats rounded to 5 decimal places.
                 let offtime = Math.round((intOnt + intDur)/divisions*100000)/100000;
-                let barBeat = mu$6.bar_and_beat_number_of_ontime(ontime, timeSignatures);
+                let barBeat = mu.bar_and_beat_number_of_ontime(ontime, timeSignatures);
                 let barOn = barBeat[0];
                 let beatOn = Math.round(barBeat[1]*100000)/100000;
-                barBeat = mu$6.bar_and_beat_number_of_ontime(offtime, timeSignatures);
+                barBeat = mu.bar_and_beat_number_of_ontime(offtime, timeSignatures);
                 let barOff = barBeat[0];
                 let beatOff = Math.round(barBeat[1]*100000)/100000;
 
@@ -3603,7 +3678,7 @@ var mm = (function () {
       const notesAndTied = notes.concat(
         self.resolve_ties(ties)
       );
-      co.notes = notesAndTied.sort(mu$6.sort_points_asc);
+      co.notes = notesAndTied.sort(mu.sort_points_asc);
       co.layer = layer;
       co.timeSignatures = timeSignatures;
       co.keySignatures = keySignatures;
@@ -4892,7 +4967,7 @@ var mm = (function () {
     							curr_staff.staffNo = staff_no;
     							// console.log('curr_staff:');
     							// console.log(curr_staff);
-    							staff_and_clef_names.push(mu$6.copy_array_object(curr_staff));
+    							staff_and_clef_names.push(mu.copy_array_object(curr_staff));
     							staff_no = staff_no + 1;
     						}
     						else {
@@ -4904,13 +4979,13 @@ var mm = (function () {
     								if (clef_attr[clefi]["clef-octave-change"]){
     									curr_staff.clefOctaveChange = clef_attr[clefi]["clef-octave-change"][0];
     								}
-    								curr_staff.clef = mu$6.clef_sign_and_line2clef_name(curr_staff.clefSign,
+    								curr_staff.clef = mu.clef_sign_and_line2clef_name(curr_staff.clefSign,
     																																		curr_staff.clefLine,
     																																		curr_staff.clefOctaveChange);
     								curr_staff.staffNo = staff_no;
     								// console.log('curr_staff:');
     								// console.log(curr_staff);
-    								staff_and_clef_names.push(mu$6.copy_array_object(curr_staff));
+    								staff_and_clef_names.push(mu.copy_array_object(curr_staff));
     								staff_no = staff_no + 1;
     							}
     						}
@@ -4950,7 +5025,7 @@ var mm = (function () {
     		// console.log('bar_1:');
     		// console.log(measure[0]);
     		let anacrusis_and_crotchets_per_bar
-    		  = mu$6.convert_1st_bar2anacrusis_val(measure[0], divisions);
+    		  = mu.convert_1st_bar2anacrusis_val(measure[0], divisions);
     		let anacrusis = anacrusis_and_crotchets_per_bar[0];
     		let crotchets_per_bar = anacrusis_and_crotchets_per_bar[1];
     		console.log('anacrusis:');
@@ -4981,11 +5056,11 @@ var mm = (function () {
         }
     		if (anacrusis != 0) {
     			time_sig_array
-    			  = mu$6.append_ontimes_to_time_signatures(
+    			  = mu.append_ontimes_to_time_signatures(
     				  time_sig_array, crotchets_per_bar);
         }
     		else {
-    			time_sig_array = mu$6.append_ontimes_to_time_signatures(time_sig_array);
+    			time_sig_array = mu.append_ontimes_to_time_signatures(time_sig_array);
         }
         // console.log('Time signatures array: ' + time_sig_array);
         co.timeSignatures = time_sig_array;
@@ -5029,7 +5104,7 @@ var mm = (function () {
     					// console.log('curr_sequence:');
     					// console.log(curr_sequence);
     					curr_sequence.ontime
-    					  = mu$6.ontime_of_bar_and_beat_number(
+    					  = mu.ontime_of_bar_and_beat_number(
     							curr_sequence.barNo, 1, time_sig_array);
     					sequencing.push(curr_sequence);
             }
@@ -5058,7 +5133,7 @@ var mm = (function () {
                   }
     							curr_sequence.words = direction[j]["direction-type"][0].words[0];
     							curr_sequence.ontime
-    								= mu$6.ontime_of_bar_and_beat_number(
+    								= mu.ontime_of_bar_and_beat_number(
     									curr_sequence.barNo, 1, time_sig_array);
     							sequencing.push(curr_sequence);
     						}
@@ -5098,7 +5173,7 @@ var mm = (function () {
     		if (page_breaks.length == 0 && system_breaks.length == 0){
     			// Insert default page and system breaks.
     			let page_and_system_breaks
-    			  = mu$6.default_page_and_system_breaks(
+    			  = mu.default_page_and_system_breaks(
     					staff_and_clef_names, measure.length);
     			page_breaks = page_and_system_breaks[0];
     			system_breaks = page_and_system_breaks[1];
@@ -5166,7 +5241,7 @@ var mm = (function () {
     								attributes[j].key[0].mode = ['major'];
     							}
     							curr_key.keyName
-    							= mu$6.nos_symbols_and_mode2key_name(attributes[j].key[0].fifths[0],
+    							= mu.nos_symbols_and_mode2key_name(attributes[j].key[0].fifths[0],
     																									 attributes[j].key[0].mode[0]);
 
     							// It is important to realise that when a MusicXML file says
@@ -5216,10 +5291,10 @@ var mm = (function () {
     							// Get ontime from bar number rather than from the ontime
     							// variable, because there could still be rounding errors here.
     							curr_key.ontime
-    								= mu$6.ontime_of_bar_and_beat_number(curr_key.barNo, 1, time_sig_array);
+    								= mu.ontime_of_bar_and_beat_number(curr_key.barNo, 1, time_sig_array);
     							for (let staffi = 0; staffi < staff_nos_for_this_id.length; staffi++){
     								curr_key.staffNo = staff_nos_for_this_id[staffi];
-    								key_sig_array.push(mu$6.copy_array_object(curr_key));
+    								key_sig_array.push(mu.copy_array_object(curr_key));
     							}
     						}
 
@@ -5233,7 +5308,7 @@ var mm = (function () {
     							// Get ontime from bar number rather than from the ontime
     							// variable, because there could still be rounding errors here.
     							curr_clef.ontime
-    								= mu$6.ontime_of_bar_and_beat_number(curr_clef.barNo, 1, time_sig_array);
+    								= mu.ontime_of_bar_and_beat_number(curr_clef.barNo, 1, time_sig_array);
     							curr_clef.clef = "unknown"; // Populated below.
     							for (let clefi = 0; clefi < clef_attr.length; clefi++){
     								curr_clef.clefSign = clef_attr[clefi].sign[0];
@@ -5241,7 +5316,7 @@ var mm = (function () {
     								if (clef_attr[clefi]["clef-octave-change"]){
     									curr_clef.clefOctaveChange = clef_attr[clefi]["clef-octave-change"][0];
     								}
-    								curr_clef.clef = mu$6.clef_sign_and_line2clef_name(curr_clef.clefSign,
+    								curr_clef.clef = mu.clef_sign_and_line2clef_name(curr_clef.clefSign,
     																																		curr_clef.clefLine,
     																																		curr_clef.clefOctaveChange);
     								if (clef_attr[clefi].$ && clef_attr[clefi].$.number){
@@ -5256,7 +5331,7 @@ var mm = (function () {
     								// curr_clef.staffNo = staff_no;
     								// console.log('curr_staff:');
     								// console.log(curr_staff);
-    								clef_changes.push(mu$6.copy_array_object(curr_clef));
+    								clef_changes.push(mu.copy_array_object(curr_clef));
     								// staff_no = staff_no + 1;
     							}
     						}
@@ -5276,7 +5351,7 @@ var mm = (function () {
     							curr_tempo.barOn = measure_index + (anacrusis == 0);
     							curr_tempo.beatOn = 1;
     							curr_tempo.ontime
-    							  = mu$6.ontime_of_bar_and_beat_number(
+    							  = mu.ontime_of_bar_and_beat_number(
     									curr_tempo.barOn, 1, time_sig_array);
     							curr_tempo.bpm = parseFloat(direction[j].sound[0].$.tempo);
     							// console.log('direction-type:');
@@ -5285,7 +5360,7 @@ var mm = (function () {
     									direction[j]["direction-type"][0].words){
     								curr_tempo.tempo = direction[j]["direction-type"][0].words[0];
     							}
-    							if (mu$6.array_object_index_of(
+    							if (mu.array_object_index_of(
     										tempo_changes, curr_tempo.ontime, "ontime") == -1){
     								// Some MusicXML files contain duplicate tempo instructions.
     								// The check above will not allow tempo instructions with the
@@ -5303,7 +5378,7 @@ var mm = (function () {
     							curr_xprss.barOn = measure_index + (anacrusis == 0);
     							curr_xprss.beatOn = 1;
     							curr_xprss.ontime
-    							  = mu$6.ontime_of_bar_and_beat_number(
+    							  = mu.ontime_of_bar_and_beat_number(
     									curr_xprss.barOn, 1, time_sig_array);
     							for (let key in direction[j]["direction-type"][0].dynamics[0]){
     								// This is not really a loop because there is probably only one
@@ -5332,7 +5407,7 @@ var mm = (function () {
     							curr_xprss.barOn = measure_index + (anacrusis == 0);
     							curr_xprss.beatOn = 1;
     							curr_xprss.ontime
-    							  = mu$6.ontime_of_bar_and_beat_number(
+    							  = mu.ontime_of_bar_and_beat_number(
     									curr_xprss.barOn, 1, time_sig_array);
     							// console.log('wedge:');
     							// console.log(direction[j]["direction-type"][0].wedge[0]);
@@ -5362,7 +5437,7 @@ var mm = (function () {
               // backup value. A POTENTIALLY DANGEROUS STRATEGY, but need a way to
               // take account of backups that are associated with cue notes and so
               // do not advance voiceNo in the usual way.
-              const maxBackup = mu$6.max_argmax(backups.map(function(b){
+              const maxBackup = mu.max_argmax(backups.map(function(b){
                 return b.duration[0]
               }))[0];
               const fullBarBackups = [];
@@ -5375,7 +5450,7 @@ var mm = (function () {
 
               // console.log('Backup: ' + backups);
               time_at_end_of_this_bar =
-    					  mu$6.ontime_of_bar_and_beat_number(
+    					  mu.ontime_of_bar_and_beat_number(
     						  measure_index + (anacrusis == 0) + 1, 1, time_sig_array);
               // console.log('Time at end of bar: ' + time_at_end_of_this_bar);
             }
@@ -5408,7 +5483,7 @@ var mm = (function () {
                       console.log("notes[note_index].pitch[0]:", notes[note_index].pitch[0]);
                       console.log("final_pitch:", final_pitch);
                     }
-    								let MNN_MPN = mu$6.pitch_and_octave2midi_note_morphetic_pair(final_pitch);
+    								let MNN_MPN = mu.pitch_and_octave2midi_note_morphetic_pair(final_pitch);
                     // Populate note_curr properties.
     								note_curr.ID = noteID.toString();
     								// console.log('NoteID: ' + note_curr.ID);
@@ -5432,10 +5507,10 @@ var mm = (function () {
     							// This is offtime in crotchet beats rounded to 5 decimal places.
     							let offtime = Math.round((intOnt + intDur)/divisions*100000)/100000;
 
-    							let bar_beat = mu$6.bar_and_beat_number_of_ontime(ontime, time_sig_array);
+    							let bar_beat = mu.bar_and_beat_number_of_ontime(ontime, time_sig_array);
                   let barOn = bar_beat[0];
                   let beatOn = Math.round(bar_beat[1]*100000)/100000;
-                  bar_beat = mu$6.bar_and_beat_number_of_ontime(offtime, time_sig_array);
+                  bar_beat = mu.bar_and_beat_number_of_ontime(offtime, time_sig_array);
                   let barOff = bar_beat[0];
                   let beatOff = Math.round(bar_beat[1]*100000)/100000;
 
@@ -5492,7 +5567,7 @@ var mm = (function () {
     								note_curr.beatOff = beatOff;
     								note_curr.offtime = offtime;
     								let staff_and_voice_nos
-    								  = mu$6.staff_voice_xml2staff_voice_json(
+    								  = mu.staff_voice_xml2staff_voice_json(
     										notes[note_index].voice, staff_nos_for_this_id, part_idx);
     								note_curr.staffNo = staff_and_voice_nos[0];
     								note_curr.voiceNo = staff_and_voice_nos[1];
@@ -5698,7 +5773,7 @@ var mm = (function () {
     								rest_curr.beatOff = beatOff;
     								rest_curr.offtime = offtime;
     								let staff_and_voice_nos
-    								  = mu$6.staff_voice_xml2staff_voice_json(
+    								  = mu.staff_voice_xml2staff_voice_json(
     										notes[note_index].voice, staff_nos_for_this_id, part_idx);
     								rest_curr.staffNo = staff_and_voice_nos[0];
     								rest_curr.voiceNo = staff_and_voice_nos[1];
@@ -5825,7 +5900,7 @@ var mm = (function () {
     								// the check in here just in case.
     								let final_pitch =
     									self.xml_pitch2pitch_class_and_octave(notes[note_index].pitch[0], true);
-    								let MNN_MPN = mu$6.pitch_and_octave2midi_note_morphetic_pair(final_pitch);
+    								let MNN_MPN = mu.pitch_and_octave2midi_note_morphetic_pair(final_pitch);
                     // Populate grace_curr properties.
     								grace_curr = {};
     								grace_curr.ID = noteID.toString();
@@ -5839,7 +5914,7 @@ var mm = (function () {
                     grace_curr.MNN = MNN_MPN[0];
                     grace_curr.MPN = MNN_MPN[1];
     								let staff_and_voice_nos
-    								  = mu$6.staff_voice_xml2staff_voice_json(
+    								  = mu.staff_voice_xml2staff_voice_json(
     										notes[note_index].voice, staff_nos_for_this_id, part_idx);
     								grace_curr.staffNo = staff_and_voice_nos[0];
     								grace_curr.voiceNo = staff_and_voice_nos[1];
@@ -5882,6 +5957,7 @@ var mm = (function () {
                     grace_array.push(grace_curr);
                   }
     						}
+                else ;
               }
             }
           }
@@ -5893,12 +5969,12 @@ var mm = (function () {
 
     		// Resolve ties and concatenate them with ordinary notes.
     		notes_and_tied = notes_array.concat(
-    			self.resolve_ties(tied_array.sort(mu$6.sort_points_asc)));
-    		co.notes = notes_and_tied.sort(mu$6.sort_points_asc);
+    			self.resolve_ties(tied_array.sort(mu.sort_points_asc)));
+    		co.notes = notes_and_tied.sort(mu.sort_points_asc);
 
     		// co.notes = notes_array.sort(mu.sort_points_asc);
     		// co.ties = tied_array.sort(mu.sort_points_asc);
-    		co.rests = rests_array.sort(mu$6.sort_points_asc);
+    		co.rests = rests_array.sort(mu.sort_points_asc);
     		// co.grace = grace_array;
     		// Include a default tempo if tempo_changes is empty or if no tempo is
     		// specified at the beginning of the piece.
@@ -5910,7 +5986,7 @@ var mm = (function () {
     			}
     			else {
     				let tempo_bar_beat =
-    				mu$6.bar_and_beat_number_of_ontime(anacrusis, time_sig_array);
+    				mu.bar_and_beat_number_of_ontime(anacrusis, time_sig_array);
     				tempo_changes.unshift({
     					"barOn": 0,
     					"beatOn": tempo_bar_beat[1],
@@ -5919,9 +5995,9 @@ var mm = (function () {
 
     		}
     		// Remove duplicate clef changes.
-    		co.clefChanges = mu$6.remove_duplicate_clef_changes(clef_changes);
+    		co.clefChanges = mu.remove_duplicate_clef_changes(clef_changes);
     		// Append expressions array.
-    		co.expressions = mu$6.resolve_expressions(xprss_array);
+    		co.expressions = mu.resolve_expressions(xprss_array);
     		// Append sequencing commands array.
     		co.sequencing = sequencing;
         // Append page_layout variable.
@@ -5957,7 +6033,7 @@ var mm = (function () {
       // itself (e.g., due to voice swap).
 
       // So we begin with a lexicographic sort.
-      ties.sort(mu$6.sort_points_asc);
+      ties.sort(mu.sort_points_asc);
 
     	// Create a variable that contains all the tie start events.
     	let tie_starts = [];
@@ -6075,16 +6151,16 @@ var mm = (function () {
     	// the grace field will appear within the tied note object, rather than
     	// directly in the oblong summary.
 
-    	let ga = mu$6.group_grace_by_contiguous_id(grace_array);
+    	let ga = mu.group_grace_by_contiguous_id(grace_array);
     	for (let gi = 0; gi < ga.length; gi++){
     		let target_ID = parseFloat(ga[gi][ga[gi].length - 1].ID) + 1;
-    		let target_idx = mu$6.array_object_index_of(notes_array, target_ID.toString(), "ID");
+    		let target_idx = mu.array_object_index_of(notes_array, target_ID.toString(), "ID");
     		if (target_idx >= 0){
     			notes_array[target_idx].grace = ga[gi];
     		}
     		else {
     			// Search for the note in the tied array instead.
-    			target_idx = mu$6.array_object_index_of(tied_array, target_ID.toString(), "ID");
+    			target_idx = mu.array_object_index_of(tied_array, target_ID.toString(), "ID");
     			if (target_idx >= 0){
     				tied_array[target_idx].grace = ga[gi];
     			}
@@ -6234,10 +6310,10 @@ var mm = (function () {
       // console.log("noteDursByVoice:", noteDursByVoice)
       // Add them all up and find the maximum duration across all voices.
       const totals = Object.keys(noteDursByVoice).map(function(k){
-        return mu$6.array_sum(noteDursByVoice[k])
+        return mu.array_sum(noteDursByVoice[k])
       });
       // console.log("totals:", totals)
-      const maxDur = mu$6.max_argmax(totals)[0];
+      const maxDur = mu.max_argmax(totals)[0];
       // console.log("maxDur:", maxDur)
 
       if (maxDur < expectedDur1stBar){
@@ -6261,11 +6337,11 @@ var mm = (function () {
 
   // Imports
   // import fs
-  const fs$3 = require('fs');
+  const fs = require('fs');
   // const { Midi } = require('@tonejs/midi')
 
   // Constructor for KernImport object
-  function KernImport(_fpath){
+  function KernImport$1(_fpath){
     // Workaround for JS context peculiarities.
     // var self = this;
     this.fpath = _fpath;
@@ -6276,8 +6352,8 @@ var mm = (function () {
     // return sth;
   }
   // Methods for KernImport object
-  KernImport.prototype = {
-    constructor: KernImport,
+  KernImport$1.prototype = {
+    constructor: KernImport$1,
 
     get_anacrusis: function(){
       const i = this.get_first_duration_index();
@@ -6329,7 +6405,7 @@ var mm = (function () {
     },
 
     get_data: function(){
-      return fs$3.readFileSync(this.fpath, "utf8")
+      return fs.readFileSync(this.fpath, "utf8")
     },
 
     get_duration_between_lines: function(idxBgn = 0, idxEnd = this.lines.length){
@@ -6405,7 +6481,7 @@ var mm = (function () {
     },
 
     get_midi_data: function(aPath){
-      return fs$3.readFileSync(this.fpath, "utf8")
+      return fs.readFileSync(this.fpath, "utf8")
     },
 
     get_phrase_boundary_ontimes: function(anacrusis = 0){
@@ -6552,43 +6628,44 @@ var mm = (function () {
    * This documentation is in the process of being completed. Some functions have
    * not had their existing documentation converted to JSDoc format yet.
    *
-   * @version 0.0.73
+   * @version 0.1.1
    * @author Tom Collins and Christian Coulon
-   * @copyright 2015-2023
+   * @copyright 2015-2024
    *
    */
 
-  const PatternGenerator$1 = PatternGenerator;
-  const Analyzer$1 = Analyzer;
-  const Generator$1 = Generator;
-  const KeyValuePair$1 = KeyValuePair;
-  const Vertex$1 = Vertex;
-  const Edge$1 = Edge;
-  const Heap$1 = Heap;
-  const PriorityQueue$1 = PriorityQueue;
-  const Graph$1 = Graph;
-  const MidiImport$1 = MidiImport;
-  const MidiExport$1 = MidiExport;
-  const XmlImport$1 = XmlImport;
-  const KernImport$1 = KernImport;
+
+  const PatternGenerator = PatternGenerator$1;
+  const Analyzer = Analyzer$1;
+  const Generator = Generator$1;
+  const KeyValuePair = KeyValuePair$1;
+  const Vertex = Vertex$1;
+  const Edge = Edge$1;
+  const Heap = Heap$1;
+  const PriorityQueue = PriorityQueue$1;
+  const Graph = Graph$1;
+  const MidiImport = MidiImport$1;
+  const MidiExport = MidiExport$1;
+  const XmlImport = XmlImport$1;
+  const KernImport = KernImport$1;
 
   var maiaMarkov = {
-    PatternGenerator: PatternGenerator$1,
-    Analyzer: Analyzer$1,
-    Generator: Generator$1,
-    KeyValuePair: KeyValuePair$1,
-    Vertex: Vertex$1,
-    Edge: Edge$1,
-    Heap: Heap$1,
-    PriorityQueue: PriorityQueue$1,
-    Graph: Graph$1,
-    MidiImport: MidiImport$1,
-    MidiExport: MidiExport$1,
-    XmlImport: XmlImport$1,
-    KernImport: KernImport$1
+    PatternGenerator,
+    Analyzer,
+    Generator,
+    KeyValuePair,
+    Vertex,
+    Edge,
+    Heap,
+    PriorityQueue,
+    Graph,
+    MidiImport,
+    MidiExport,
+    XmlImport,
+    KernImport
 
   };
 
   return maiaMarkov;
 
-}());
+})();
