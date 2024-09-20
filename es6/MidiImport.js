@@ -444,13 +444,13 @@ class MidiImport {
   get_points(){
     const self = this
     let points = []
-    self.data.tracks.forEach(function(track){
+    self.data.tracks.forEach(function(track, index){
       track.notes.forEach(function(n){
         points.push([
           n.ticks/self.data.header.ppq,
           n.midi,
           n.durationTicks/self.data.header.ppq,
-          track.channel,
+          index,
           Math.round(1000*n.velocity)/1000
         ])
       })

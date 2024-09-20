@@ -434,9 +434,9 @@ var MidiImport = function () {
     value: function get_points() {
       var self = this;
       var points = [];
-      self.data.tracks.forEach(function (track) {
+      self.data.tracks.forEach(function (track, index) {
         track.notes.forEach(function (n) {
-          points.push([n.ticks / self.data.header.ppq, n.midi, n.durationTicks / self.data.header.ppq, track.channel, Math.round(1000 * n.velocity) / 1000]);
+          points.push([n.ticks / self.data.header.ppq, n.midi, n.durationTicks / self.data.header.ppq, index, Math.round(1000 * n.velocity) / 1000]);
         });
       });
       var unqPoints = mu.unique_rows(points, true)[0];

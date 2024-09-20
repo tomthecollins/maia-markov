@@ -2916,13 +2916,13 @@ var mm = (function () {
     get_points(){
       const self = this;
       let points = [];
-      self.data.tracks.forEach(function(track){
+      self.data.tracks.forEach(function(track, index){
         track.notes.forEach(function(n){
           points.push([
             n.ticks/self.data.header.ppq,
             n.midi,
             n.durationTicks/self.data.header.ppq,
-            track.channel,
+            index,
             Math.round(1000*n.velocity)/1000
           ]);
         });
@@ -6628,7 +6628,7 @@ var mm = (function () {
    * This documentation is in the process of being completed. Some functions have
    * not had their existing documentation converted to JSDoc format yet.
    *
-   * @version 0.1.1
+   * @version 0.1.3
    * @author Tom Collins and Christian Coulon
    * @copyright 2015-2024
    *
