@@ -33,7 +33,15 @@ const mainPaths = {
     "outFileName": "blah"
   },
   "chenyu": {
-    // ...
+    "inDir": path.join(
+      "/Users", "gaochenyu", "Chenyu\ Gao", "MusicAI\ Research", "automatic_arranging", 
+      "melody\ extraction", "samples_melody_extraction"
+    ),
+    "outDir": path.join(
+      "/Users", "gaochenyu", "Chenyu\ Gao", "MusicAI\ Research", "automatic_arranging", 
+      "melody\ extraction", "maia-markov_out"
+    ),
+    "outFileName": "blah"
   }
 }
 
