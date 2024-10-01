@@ -341,16 +341,19 @@ var mm = (function () {
       console.log("anStm.length:", anStm.length);
       anStm = this.prune_stm(anStm, _param);
       console.log("pruned anStm.length:", anStm.length);
-      // console.log("pStm[0].beat_mnn_state:", pStm[0].beat_mnn_state);
-      // console.log("pStm.slice(0, 1):", pStm.slice(0, 1));
-      fs$4.writeFileSync(
-        path.join(_param.outPath, _param.filename + "_stm.js"),
-        JSON.stringify(anStm)//, null, 2)
-      );
-      if (_param.stmTimer){
-        clearTimeout(_param.stmTimer);
+      if (anStm.length > 0){
+        // console.log("anStm[0].beat_mnn_state:", anStm[0].beat_mnn_state);
+        // console.log("anStm.slice(0, 1):", anStm.slice(0, 1));
+        fs$4.writeFileSync(
+          path.join(_param.outPath, _param.filename + "_stm.js"),
+          JSON.stringify(anStm)//, null, 2)
+        );
+        if (_param.stmTimer){
+          clearTimeout(_param.stmTimer);
+        }
+        return anStm
       }
-      return anStm
+      // Else, return undefined.
     },
 
     construct_stm: function(compObjs, param){
@@ -721,13 +724,17 @@ var mm = (function () {
     construct_prune_write_initial: function(_comps, _stm, _param){
       let initialDistbn = this.construct_initial(_comps, _param);
       initialDistbn = this.prune_initial(initialDistbn, _stm, _param);
-      fs$4.writeFileSync(
-        path.join(_param.outPath, _param.filename + "_initial.js"),
-        JSON.stringify(initialDistbn)//, null, 2)
-      );
-      if (_param.initialTimer){
-        clearTimeout(_param.initialTimer);
+      if (initialDistbn.length > 0){
+        fs$4.writeFileSync(
+          path.join(_param.outPath, _param.filename + "_initial.js"),
+          JSON.stringify(initialDistbn)//, null, 2)
+        );
+        if (_param.initialTimer){
+          clearTimeout(_param.initialTimer);
+        }
+        return initialDistbn
       }
+      // Else, return undefined.
     },
 
     construct_initial: function(compObjs, param){
@@ -6659,7 +6666,7 @@ var mm = (function () {
    * This documentation is in the process of being completed. Some functions have
    * not had their existing documentation converted to JSDoc format yet.
    *
-   * @version 0.1.5
+   * @version 0.1.6
    * @author Tom Collins and Christian Coulon
    * @copyright 2015-2024
    *

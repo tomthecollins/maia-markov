@@ -338,16 +338,19 @@ Analyzer.prototype = {
     console.log("anStm.length:", anStm.length)
     anStm = this.prune_stm(anStm, _param)
     console.log("pruned anStm.length:", anStm.length)
-    // console.log("pStm[0].beat_mnn_state:", pStm[0].beat_mnn_state);
-    // console.log("pStm.slice(0, 1):", pStm.slice(0, 1));
-    fs.writeFileSync(
-      path.join(_param.outPath, _param.filename + "_stm.js"),
-      JSON.stringify(anStm)//, null, 2)
-    )
-    if (_param.stmTimer){
-      clearTimeout(_param.stmTimer)
+    if (anStm.length > 0){
+      // console.log("anStm[0].beat_mnn_state:", anStm[0].beat_mnn_state);
+      // console.log("anStm.slice(0, 1):", anStm.slice(0, 1));
+      fs.writeFileSync(
+        path.join(_param.outPath, _param.filename + "_stm.js"),
+        JSON.stringify(anStm)//, null, 2)
+      )
+      if (_param.stmTimer){
+        clearTimeout(_param.stmTimer)
+      }
+      return anStm
     }
-    return anStm
+    // Else, return undefined.
   },
 
   construct_stm: function(compObjs, param){
@@ -719,13 +722,17 @@ Analyzer.prototype = {
   construct_prune_write_initial: function(_comps, _stm, _param){
     let initialDistbn = this.construct_initial(_comps, _param)
     initialDistbn = this.prune_initial(initialDistbn, _stm, _param)
-    fs.writeFileSync(
-      path.join(_param.outPath, _param.filename + "_initial.js"),
-      JSON.stringify(initialDistbn)//, null, 2)
-    )
-    if (_param.initialTimer){
-      clearTimeout(_param.initialTimer)
+    if (initialDistbn.length > 0){
+      fs.writeFileSync(
+        path.join(_param.outPath, _param.filename + "_initial.js"),
+        JSON.stringify(initialDistbn)//, null, 2)
+      )
+      if (_param.initialTimer){
+        clearTimeout(_param.initialTimer)
+      }
+      return initialDistbn
     }
+    // Else, return undefined.
   },
 
   construct_initial: function(compObjs, param){
