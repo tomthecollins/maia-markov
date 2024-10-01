@@ -2,6 +2,7 @@
 // import 'maia-util'
 // import mu from 'maia-util'
 const fs = require('fs')
+const path = require('path')
 const mu = require('maia-util')
 // const uu = require('uuid')
 

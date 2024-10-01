@@ -5,6 +5,7 @@ var mm = (function () {
   // import 'maia-util'
   // import mu from 'maia-util'
   const fs$4 = require('fs');
+  const path = require('path');
   const mu$5 = require('maia-util');
   // const uu = require('uuid')
 
@@ -6658,7 +6659,7 @@ var mm = (function () {
    * This documentation is in the process of being completed. Some functions have
    * not had their existing documentation converted to JSDoc format yet.
    *
-   * @version 0.1.4
+   * @version 0.1.5
    * @author Tom Collins and Christian Coulon
    * @copyright 2015-2024
    *

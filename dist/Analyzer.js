@@ -11,6 +11,7 @@ function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
 // import 'maia-util'
 // import mu from 'maia-util'
 var fs = require('fs');
+var path = require('path');
 var mu = require('maia-util');
 // const uu = require('uuid')
 
