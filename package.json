@@ -1,6 +1,6 @@
 {
   "name": "maia-markov",
-  "version": "0.1.3",
+  "version": "0.1.4",
   "description": "Markov analysis and generation functions supporting various applications by Music Artificial Intelligence Algorithms, Inc.",
   "main": "dist/index.js",
   "jsnext:main": "es6/index.js",

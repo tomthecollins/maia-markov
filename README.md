@@ -67,6 +67,7 @@ TBD
 
 ## Release History
 
+* 0.1.4 Added stm and initial distribution construction, pruning and file-writing methods into the Analyzer class.
 * 0.1.3 Fixed a bug with coincident channels in MIDI import.
 * 0.1.2 Added some extra instruments to extract_vocal().
 * 0.1.1 Working on scenic_path().

@@ -1,4 +1,4 @@
-"use strict";
+'use strict';
 
 Object.defineProperty(exports, "__esModule", {
   value: true
@@ -10,6 +10,7 @@ function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
 // Imports
 // import 'maia-util'
 // import mu from 'maia-util'
+var fs = require('fs');
 var mu = require('maia-util');
 // const uu = require('uuid')
 
@@ -345,6 +346,21 @@ Analyzer.prototype = {
       });
     });
     return out_array;
+  },
+
+  construct_prune_write_stm: function construct_prune_write_stm(_comps, _param) {
+    var anStm = this.construct_stm(_comps, _param);
+    console.log("anStm.length:", anStm.length);
+    anStm = this.prune_stm(anStm, _param);
+    console.log("pruned anStm.length:", anStm.length);
+    // console.log("pStm[0].beat_mnn_state:", pStm[0].beat_mnn_state);
+    // console.log("pStm.slice(0, 1):", pStm.slice(0, 1));
+    fs.writeFileSync(path.join(_param.outPath, _param.filename + "_stm.js"), JSON.stringify(anStm) //, null, 2)
+    );
+    if (_param.stmTimer) {
+      clearTimeout(_param.stmTimer);
+    }
+    return anStm;
   },
 
   construct_stm: function construct_stm(compObjs, param) {
@@ -700,6 +716,16 @@ Analyzer.prototype = {
       point_set[i].splice(idxMPN, 1, new_MPN);
     }
     return [trans_pair, point_set];
+  },
+
+  construct_prune_write_initial: function construct_prune_write_initial(_comps, _stm, _param) {
+    var initialDistbn = this.construct_initial(_comps, _param);
+    initialDistbn = this.prune_initial(initialDistbn, _stm, _param);
+    fs.writeFileSync(path.join(_param.outPath, _param.filename + "_initial.js"), JSON.stringify(initialDistbn) //, null, 2)
+    );
+    if (_param.initialTimer) {
+      clearTimeout(_param.initialTimer);
+    }
   },
 
   construct_initial: function construct_initial(compObjs, param) {
