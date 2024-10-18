@@ -3038,56 +3038,54 @@ var mm = (function () {
   const mu$1 = require('maia-util');
 
   // Constructor for MidiExport object
-  function MidiExport$1(
-    _points, _controlChanges, _fpath, _param = {
-      "scaleFactor": 1,
-      "timeSigTopNo": 4,
-      "timeSigBottomNo": 4,
-      "noteIndices": {
-        "ontimeIndex": 0,
-        "mnnIndex": 1,
-        "durationIndex": 3,
-        "channelIndex": 4,
-        "velocityIndex": 5
-      },
-      "ccIndices": {
-        "ontimeIndex": 0,
-        "numberIndex": 1,
-        "channelIndex": 2,
-        "valueIndex": 3
+  let MidiExport$1 = class MidiExport {
+    constructor(
+      _points, _controlChanges, _fpath, _param = {
+        "scaleFactor": 1,
+        "timeSigTopNo": 4,
+        "timeSigBottomNo": 4,
+        "noteIndices": {
+          "ontimeIndex": 0,
+          "mnnIndex": 1,
+          "durationIndex": 3,
+          "channelIndex": 4,
+          "velocityIndex": 5
+        },
+        "ccIndices": {
+          "ontimeIndex": 0,
+          "numberIndex": 1,
+          "channelIndex": 2,
+          "valueIndex": 3
+        }
       }
+    ){
+      // Workaround for JS context peculiarities.
+      // var self = this;
+      this.points = _points;
+      this.controlChanges = _controlChanges;
+      this.fpath = _fpath;
+      this.scaleFactor = _param.scaleFactor;
+      this.timeSigTopNo = _param.timeSigTopNo;
+      this.timeSigBottomNo = _param.timeSigBottomNo;
+      this.noteIndices = {};
+      this.noteIndices.ontimeIndex = _param.noteIndices.ontimeIndex;
+      this.noteIndices.mnnIndex = _param.noteIndices.mnnIndex;
+      this.noteIndices.durationIndex = _param.noteIndices.durationIndex;
+      this.noteIndices.channelIndex = _param.noteIndices.channelIndex;
+      this.noteIndices.velocityIndex = _param.noteIndices.velocityIndex;
+      this.ccIndices = {};
+      if (_param.ccIndices){
+        this.ccIndices.ontimeIndex = _param.ccIndices.ontimeIndex;
+        this.ccIndices.numberIndex = _param.ccIndices.numberIndex;
+        this.ccIndices.channelIndex = _param.ccIndices.channelIndex;
+        this.ccIndices.valueIndex = _param.ccIndices.valueIndex;
+      }
+      this.my_export();
+      // Possible to return something.
+      // return sth;
     }
-  ){
-    // Workaround for JS context peculiarities.
-    // var self = this;
-    this.points = _points;
-    this.controlChanges = _controlChanges;
-    this.fpath = _fpath;
-    this.scaleFactor = _param.scaleFactor;
-    this.timeSigTopNo = _param.timeSigTopNo;
-    this.timeSigBottomNo = _param.timeSigBottomNo;
-    this.noteIndices = {};
-    this.noteIndices.ontimeIndex = _param.noteIndices.ontimeIndex;
-    this.noteIndices.mnnIndex = _param.noteIndices.mnnIndex;
-    this.noteIndices.durationIndex = _param.noteIndices.durationIndex;
-    this.noteIndices.channelIndex = _param.noteIndices.channelIndex;
-    this.noteIndices.velocityIndex = _param.noteIndices.velocityIndex;
-    this.ccIndices = {};
-    if (_param.ccIndices){
-      this.ccIndices.ontimeIndex = _param.ccIndices.ontimeIndex;
-      this.ccIndices.numberIndex = _param.ccIndices.numberIndex;
-      this.ccIndices.channelIndex = _param.ccIndices.channelIndex;
-      this.ccIndices.valueIndex = _param.ccIndices.valueIndex;
-    }
-    this.my_export();
-    // Possible to return something.
-    // return sth;
-  }
-  // Methods for MidiExport object
-  MidiExport$1.prototype = {
-    constructor: MidiExport$1,
 
-    my_export: function(){
+    my_export(){
       const self = this;
       let ontimeCorrection = 0;
       const minOntime = mu$1.min_argmin(
@@ -3153,8 +3151,6 @@ var mm = (function () {
         new Buffer.from(midi.toArray())
       );
     }
-
-
   };
 
   // Imports
@@ -6666,7 +6662,7 @@ var mm = (function () {
    * This documentation is in the process of being completed. Some functions have
    * not had their existing documentation converted to JSDoc format yet.
    *
-   * @version 0.1.7
+   * @version 0.1.8
    * @author Tom Collins and Christian Coulon
    * @copyright 2015-2024
    *

@@ -5,56 +5,54 @@ const { Midi } = require('@tonejs/midi')
 const mu = require('maia-util')
 
 // Constructor for MidiExport object
-export default function MidiExport(
-  _points, _controlChanges, _fpath, _param = {
-    "scaleFactor": 1,
-    "timeSigTopNo": 4,
-    "timeSigBottomNo": 4,
-    "noteIndices": {
-      "ontimeIndex": 0,
-      "mnnIndex": 1,
-      "durationIndex": 3,
-      "channelIndex": 4,
-      "velocityIndex": 5
-    },
-    "ccIndices": {
-      "ontimeIndex": 0,
-      "numberIndex": 1,
-      "channelIndex": 2,
-      "valueIndex": 3
+class MidiExport {
+  constructor(
+    _points, _controlChanges, _fpath, _param = {
+      "scaleFactor": 1,
+      "timeSigTopNo": 4,
+      "timeSigBottomNo": 4,
+      "noteIndices": {
+        "ontimeIndex": 0,
+        "mnnIndex": 1,
+        "durationIndex": 3,
+        "channelIndex": 4,
+        "velocityIndex": 5
+      },
+      "ccIndices": {
+        "ontimeIndex": 0,
+        "numberIndex": 1,
+        "channelIndex": 2,
+        "valueIndex": 3
+      }
     }
+  ){
+    // Workaround for JS context peculiarities.
+    // var self = this;
+    this.points = _points
+    this.controlChanges = _controlChanges
+    this.fpath = _fpath
+    this.scaleFactor = _param.scaleFactor
+    this.timeSigTopNo = _param.timeSigTopNo
+    this.timeSigBottomNo = _param.timeSigBottomNo
+    this.noteIndices = {}
+    this.noteIndices.ontimeIndex = _param.noteIndices.ontimeIndex
+    this.noteIndices.mnnIndex = _param.noteIndices.mnnIndex
+    this.noteIndices.durationIndex = _param.noteIndices.durationIndex
+    this.noteIndices.channelIndex = _param.noteIndices.channelIndex
+    this.noteIndices.velocityIndex = _param.noteIndices.velocityIndex
+    this.ccIndices = {}
+    if (_param.ccIndices){
+      this.ccIndices.ontimeIndex = _param.ccIndices.ontimeIndex
+      this.ccIndices.numberIndex = _param.ccIndices.numberIndex
+      this.ccIndices.channelIndex = _param.ccIndices.channelIndex
+      this.ccIndices.valueIndex = _param.ccIndices.valueIndex
+    }
+    this.my_export()
+    // Possible to return something.
+    // return sth;
   }
-){
-  // Workaround for JS context peculiarities.
-  // var self = this;
-  this.points = _points
-  this.controlChanges = _controlChanges
-  this.fpath = _fpath
-  this.scaleFactor = _param.scaleFactor
-  this.timeSigTopNo = _param.timeSigTopNo
-  this.timeSigBottomNo = _param.timeSigBottomNo
-  this.noteIndices = {}
-  this.noteIndices.ontimeIndex = _param.noteIndices.ontimeIndex
-  this.noteIndices.mnnIndex = _param.noteIndices.mnnIndex
-  this.noteIndices.durationIndex = _param.noteIndices.durationIndex
-  this.noteIndices.channelIndex = _param.noteIndices.channelIndex
-  this.noteIndices.velocityIndex = _param.noteIndices.velocityIndex
-  this.ccIndices = {}
-  if (_param.ccIndices){
-    this.ccIndices.ontimeIndex = _param.ccIndices.ontimeIndex
-    this.ccIndices.numberIndex = _param.ccIndices.numberIndex
-    this.ccIndices.channelIndex = _param.ccIndices.channelIndex
-    this.ccIndices.valueIndex = _param.ccIndices.valueIndex
-  }
-  this.my_export()
-  // Possible to return something.
-  // return sth;
-}
-// Methods for MidiExport object
-MidiExport.prototype = {
-  constructor: MidiExport,
 
-  my_export: function(){
+  my_export(){
     const self = this
     let ontimeCorrection = 0
     const minOntime = mu.min_argmin(
@@ -120,6 +118,6 @@ MidiExport.prototype = {
       new Buffer.from(midi.toArray())
     )
   }
-
-
 }
+
+export default MidiExport

@@ -67,7 +67,7 @@ TBD
 
 ## Release History
 
-* 0.1.7 Bug fix of protected word "export"
+* 0.1.7-8 Bug fix of protected word "export"
 * 0.1.4-6 Added stm and initial distribution construction, pruning and file-writing methods into the Analyzer class.
 * 0.1.3 Fixed a bug with coincident channels in MIDI import.
 * 0.1.2 Added some extra instruments to extract_vocal().
