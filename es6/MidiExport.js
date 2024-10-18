@@ -46,7 +46,7 @@ export default function MidiExport(
     this.ccIndices.channelIndex = _param.ccIndices.channelIndex
     this.ccIndices.valueIndex = _param.ccIndices.valueIndex
   }
-  this.export()
+  this.my_export()
   // Possible to return something.
   // return sth;
 }
@@ -54,7 +54,7 @@ export default function MidiExport(
 MidiExport.prototype = {
   constructor: MidiExport,
 
-  export: function(){
+  my_export: function(){
     const self = this
     let ontimeCorrection = 0
     const minOntime = mu.min_argmin(

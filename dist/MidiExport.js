@@ -55,7 +55,7 @@ function MidiExport(_points, _controlChanges, _fpath) {
     this.ccIndices.channelIndex = _param.ccIndices.channelIndex;
     this.ccIndices.valueIndex = _param.ccIndices.valueIndex;
   }
-  this.export();
+  this.my_export();
   // Possible to return something.
   // return sth;
 }
@@ -63,7 +63,7 @@ function MidiExport(_points, _controlChanges, _fpath) {
 MidiExport.prototype = {
   constructor: MidiExport,
 
-  export: function _export() {
+  my_export: function my_export() {
     var self = this;
     var ontimeCorrection = 0;
     var minOntime = mu.min_argmin(self.points.map(function (p) {

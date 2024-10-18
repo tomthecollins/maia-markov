@@ -3079,7 +3079,7 @@ var mm = (function () {
       this.ccIndices.channelIndex = _param.ccIndices.channelIndex;
       this.ccIndices.valueIndex = _param.ccIndices.valueIndex;
     }
-    this.export();
+    this.my_export();
     // Possible to return something.
     // return sth;
   }
@@ -3087,7 +3087,7 @@ var mm = (function () {
   MidiExport$1.prototype = {
     constructor: MidiExport$1,
 
-    export: function(){
+    my_export: function(){
       const self = this;
       let ontimeCorrection = 0;
       const minOntime = mu$1.min_argmin(
@@ -6666,7 +6666,7 @@ var mm = (function () {
    * This documentation is in the process of being completed. Some functions have
    * not had their existing documentation converted to JSDoc format yet.
    *
-   * @version 0.1.6
+   * @version 0.1.7
    * @author Tom Collins and Christian Coulon
    * @copyright 2015-2024
    *
