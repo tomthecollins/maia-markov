@@ -23,9 +23,9 @@
  * This documentation is in the process of being completed. Some functions have
  * not had their existing documentation converted to JSDoc format yet.
  *
- * @version 0.1.8
+ * @version 0.1.9
  * @author Tom Collins and Christian Coulon
- * @copyright 2015-2024
+ * @copyright 2015-2025
  *
  */
 
@@ -47,6 +47,7 @@ import PriorityQueue_default from './PriorityQueue'
 import Graph_default from './Graph'
 import MidiImport_default from './MidiImport'
 import MidiExport_default from './MidiExport'
+import MelodyExtractor_default from './MelodyExtractor'
 import XmlImport_default from './XmlImport'
 import KernImport_default from './KernImport'
 
@@ -61,6 +62,7 @@ export const PriorityQueue = PriorityQueue_default
 export const Graph = Graph_default
 export const MidiImport = MidiImport_default
 export const MidiExport = MidiExport_default
+export const MelodyExtractor = MelodyExtractor_default
 export const XmlImport = XmlImport_default
 export const KernImport = KernImport_default
 
@@ -76,6 +78,7 @@ export default {
   Graph,
   MidiImport,
   MidiExport,
+  MelodyExtractor,
   XmlImport,
   KernImport
 
