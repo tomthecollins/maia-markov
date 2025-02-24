@@ -142,7 +142,7 @@ var MelodyExtractor = function () {
 
         // Export MIDI file.
         if (midiSaveDir) {
-          var _fpath = path.join(midiSaveDir, self.fname + ".mid");
+          var _fpath = path.join(midiSaveDir, self.fname);
           new _MidiExport2.default(transposedNotes, [], _fpath, {
             "scaleFactor": 0.5,
             "timeSigTopNo": 4,

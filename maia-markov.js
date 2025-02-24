@@ -3259,7 +3259,7 @@ var mm = (function () {
 
         // Export MIDI file.
         if (midiSaveDir){
-          const _fpath = path.join(midiSaveDir, self.fname + ".mid");
+          const _fpath = path.join(midiSaveDir, self.fname);
           new MidiExport$1(
             transposedNotes, [], _fpath, {
               "scaleFactor": 0.5,
@@ -7163,7 +7163,7 @@ var mm = (function () {
    * This documentation is in the process of being completed. Some functions have
    * not had their existing documentation converted to JSDoc format yet.
    *
-   * @version 0.1.9
+   * @version 0.1.11
    * @author Tom Collins and Christian Coulon
    * @copyright 2015-2025
    *

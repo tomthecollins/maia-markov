@@ -106,7 +106,7 @@ class MelodyExtractor {
 
       // Export MIDI file.
       if (midiSaveDir){
-        const _fpath = path.join(midiSaveDir, self.fname + ".mid")
+        const _fpath = path.join(midiSaveDir, self.fname)
         new MidiExport(
           transposedNotes, [], _fpath, {
             "scaleFactor": 0.5,
