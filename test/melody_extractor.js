@@ -44,6 +44,25 @@ const mainPaths = {
 }
 
 
+// Parameters
+const param = {
+  "indices": {
+    "ontime": 0,
+    "mnn": 1,
+    "duration": 2,
+    "channel": 3,
+    "velocity": 4
+  },
+  // "quantisationSet": mu.farey(4),
+  // "anacrusis": 0,
+  "pitchModulo": 12,
+  "winSize": null,
+  "stepSize": null,
+  "velMnnWeight": 0.5
+}
+
+
+
 // Select user-specific path
 const mainPath = mainPaths[argv.u]
 
@@ -52,7 +71,7 @@ fs.readdirSync(mainPath["inDir"]).forEach(function(file){
   if (path.extname(file) === ".mid"){
     console.log("file:", file)
     const me = new mm.MelodyExtractor(
-      path.join(mainPath["inDir"], file)
+      path.join(mainPath["inDir"], file), param
     )
     const mel = me.extract_melody(mainPath["outDir"])
     // console.log("mel.slice(0, 10):", mel.slice(0, 10))

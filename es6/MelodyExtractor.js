@@ -18,20 +18,37 @@ class MelodyExtractor {
    * @param {function} _f - The function for returning the nth Farey set.
    * @param {number} _anc - The anacrusis value.
    */
-  constructor(_fpath, _f = mu.farey(4), _anc = 0){
+  constructor(
+    _fpath,
+    _param = {
+      "indices": {
+        "ontime": 0,
+        "mnn": 1,
+        "duration": 2,
+        "channel": 3,
+        "velocity": 4
+      },
+      // "quantisationSet": [0, 1/6, 1/4, 1/3, 1/2, 2/3, 3/4, 5/6, 1],
+      // "anacrusis": 0,
+      "pitchModulo": 12,
+      "winSize": 2,
+      "stepSize": 1,
+      "velMnnWeight": 0.5
+    }
+  ){
     // Workaround for JS context peculiarities.
     // var self = this;
     this.fpath = _fpath
     this.fname = path.basename(this.fpath)
-    this.ontimeIndex = 0
-    this.mnnIndex = 1
-    this.durationIndex = 2
-    this.chanIdx = 3
-    this.velIndex = 4
-    this.modulo = 12
-    this.winSize = 2
-    this.winStep = 1
-    this.velMnnWeight = 0.5
+    this.ontimeIndex = _param["indices"]["ontime"]
+    this.mnnIndex = _param["indices"]["mnn"]
+    this.durationIndex = _param["indices"]["duration"]
+    this.chanIdx = _param["indices"]["channel"]
+    this.velIndex = _param["indices"]["velocity"]
+    this.modulo = _param["pitchModulo"]
+    this.winSize = _param["winSize"]
+    this.winStep = _param["stepSize"]
+    this.velMnnWeight = _param["velMnnWeight"]
     this.points = this.get_tonal_points(this.fpath)
 
     // this.timeSigs = this.get_time_sigs()
@@ -55,7 +72,7 @@ class MelodyExtractor {
     try {
       const seg = mu.segment(self.points, true, self.ontimeIndex, self.durIndex)
       // Have a look at the first five segments.
-      console.log("seg.slice(0, 5):", seg.slice(0, 5))
+      // console.log("seg.slice(0, 5):", seg.slice(0, 5))
       const prominentNotes = seg.map(function(s){
         const weightedCounts = []
         for (let i = 0; i < self.modulo; i++){
@@ -81,7 +98,7 @@ class MelodyExtractor {
         return { weightedCounts: weightedCounts, winner: winner, ontime: s.ontime, offtime: s.offtime, origins: currentOriginNote}
       })
 
-      console.log("prominentNotes", prominentNotes.slice(0,5))
+      // console.log("prominentNotes", prominentNotes.slice(0,5))
 
       // Reconstruct notes from the octave-free notes.
       // const transposedNotes = prominentNotes.map(function(info){
@@ -224,10 +241,18 @@ class MelodyExtractor {
     let endIdx = 0
     for(let i = 1; i <= prominentNotes.length-1; i ++){
       const currentProminentNote = prominentNotes[i]
-      if(currentProminentNote.offtime > startOntime && prominentNotes[i-1].offtime <= startOntime && prominentNotes[i-1].ontime < endOntime){
+      if(
+        currentProminentNote.offtime > startOntime &&
+        prominentNotes[i-1].offtime <= startOntime &&
+        prominentNotes[i-1].ontime < endOntime
+      ){
         startIdx = i - 1
       }
-      if(currentProminentNote.ontime >= endOntime && prominentNotes[i-1].ontime < endOntime && prominentNotes[i-1].ontime > startOntime){
+      if(
+        currentProminentNote.ontime >= endOntime &&
+        prominentNotes[i-1].ontime < endOntime &&
+        prominentNotes[i-1].ontime > startOntime
+      ){
         endIdx = i - 1
       }
 
@@ -236,7 +261,7 @@ class MelodyExtractor {
   }
 
   find_note_idx_in_window_specific_channel(channel, tmpWinStart, tmpWinEnd){
-    console.log("******channel", channel)
+    // console.log("******channel", channel)
     let flag = 0
     for(let i = 0; i <= this.points.length-1; i ++){
       if(
@@ -245,7 +270,7 @@ class MelodyExtractor {
         this.points[i][0] < tmpWinEnd
       ){
         flag = 1
-        console.log("orgPoints", this.points[i])
+        // console.log("orgPoints", this.points[i])
       }
     }
     return flag
@@ -259,14 +284,26 @@ class MelodyExtractor {
     const timeSig = 4 // TODO: we will need to know the real time segment.
 
     let winStart = 0
-    let winEnd = winStart + winSize*timeSig
+    let winEnd
+    if (this.winSize === null){
+      winEnd = prominentNotes[prominentNotes.length-1].ontime + 1
+    }
+    else {
+      winEnd = winStart + winSize*timeSig
+    }
+    // console.log("winStart:", winStart)
+    // console.log("winEnd:", winEnd)
     const winEndOntime = prominentNotes[prominentNotes.length-1].ontime
 
-    console.log("prominentNotes.length", prominentNotes.length)
+    // console.log("prominentNotes.length", prominentNotes.length)
     // Notes in weightedCounts [ ontime, pitch, duration, channel, velocity]
     while(winStart < winEndOntime){
 
       const winIdx = this.find_note_idx_in_window(prominentNotes, winStart, winEnd)
+      if (this.winSize === null){
+        winIdx[1] = prominentNotes.length - 1
+      }
+      // console.log("winIdx:", winIdx)
       // console.log("***winStart", winStart)
       // console.log("***winEnd", winEnd)
       if(winIdx[1] !== 0){
@@ -279,8 +316,8 @@ class MelodyExtractor {
         currentMelodyChannel.forEach(function(item){
           for(let tmpWinStart = winStart; tmpWinStart + 1*timeSig <= winEnd; tmpWinStart = tmpWinStart+1*timeSig){
             let tmpWinEnd = tmpWinStart + 1*timeSig
-            console.log("&&&&&&&tmpWinStart", tmpWinStart)
-            console.log("&&&&&&&tmpWinEnd", tmpWinEnd)
+            // console.log("&&&&&&&tmpWinStart", tmpWinStart)
+            // console.log("&&&&&&&tmpWinEnd", tmpWinEnd)
             let flag = self.find_note_idx_in_window_specific_channel(parseInt(item), tmpWinStart, tmpWinEnd)
             if(flag !== 0){
               melodyChannel.push([parseInt(item),[tmpWinStart, tmpWinEnd], currentMaxStrength])
@@ -290,8 +327,14 @@ class MelodyExtractor {
         })
       }
 
-      winStart = winStart + winStep*timeSig
-      winEnd = winStart + winSize*timeSig
+      if (this.winSize === null){
+        winStart = winEndOntime
+        winEnd = null
+      }
+      else {
+        winStart = winStart + winStep*timeSig
+        winEnd = winStart + winSize*timeSig
+      }
 
       // console.log("nextStartIdx", nextStartIdx)
     }
@@ -338,7 +381,7 @@ class MelodyExtractor {
       processedMelodyChannel.push([parseInt(winChannel), startOntime])
       startOntime = startOntime + 1
     }
-    console.log("processedMelodyChannel", processedMelodyChannel)
+    // console.log("processedMelodyChannel", processedMelodyChannel)
     // Get melody points
     let currentOntimeIdx = 0
     this.points.forEach(function(point){

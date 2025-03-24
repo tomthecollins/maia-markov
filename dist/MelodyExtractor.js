@@ -41,9 +41,21 @@ var MelodyExtractor = function () {
    * @param {number} _anc - The anacrusis value.
    */
   function MelodyExtractor(_fpath) {
-    var _f = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : mu.farey(4);
-
-    var _anc = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 0;
+    var _param = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {
+      "indices": {
+        "ontime": 0,
+        "mnn": 1,
+        "duration": 2,
+        "channel": 3,
+        "velocity": 4
+      },
+      // "quantisationSet": [0, 1/6, 1/4, 1/3, 1/2, 2/3, 3/4, 5/6, 1],
+      // "anacrusis": 0,
+      "pitchModulo": 12,
+      "winSize": 2,
+      "stepSize": 1,
+      "velMnnWeight": 0.5
+    };
 
     _classCallCheck(this, MelodyExtractor);
 
@@ -51,15 +63,15 @@ var MelodyExtractor = function () {
     // var self = this;
     this.fpath = _fpath;
     this.fname = path.basename(this.fpath);
-    this.ontimeIndex = 0;
-    this.mnnIndex = 1;
-    this.durationIndex = 2;
-    this.chanIdx = 3;
-    this.velIndex = 4;
-    this.modulo = 12;
-    this.winSize = 2;
-    this.winStep = 1;
-    this.velMnnWeight = 0.5;
+    this.ontimeIndex = _param["indices"]["ontime"];
+    this.mnnIndex = _param["indices"]["mnn"];
+    this.durationIndex = _param["indices"]["duration"];
+    this.chanIdx = _param["indices"]["channel"];
+    this.velIndex = _param["indices"]["velocity"];
+    this.modulo = _param["pitchModulo"];
+    this.winSize = _param["winSize"];
+    this.winStep = _param["stepSize"];
+    this.velMnnWeight = _param["velMnnWeight"];
     this.points = this.get_tonal_points(this.fpath);
 
     // this.timeSigs = this.get_time_sigs()
@@ -89,7 +101,7 @@ var MelodyExtractor = function () {
       try {
         var seg = mu.segment(self.points, true, self.ontimeIndex, self.durIndex);
         // Have a look at the first five segments.
-        console.log("seg.slice(0, 5):", seg.slice(0, 5));
+        // console.log("seg.slice(0, 5):", seg.slice(0, 5))
         var prominentNotes = seg.map(function (s) {
           var weightedCounts = [];
           for (var i = 0; i < self.modulo; i++) {
@@ -117,7 +129,7 @@ var MelodyExtractor = function () {
           return { weightedCounts: weightedCounts, winner: winner, ontime: s.ontime, offtime: s.offtime, origins: currentOriginNote };
         });
 
-        console.log("prominentNotes", prominentNotes.slice(0, 5));
+        // console.log("prominentNotes", prominentNotes.slice(0,5))
 
         // Reconstruct notes from the octave-free notes.
         // const transposedNotes = prominentNotes.map(function(info){
@@ -258,12 +270,12 @@ var MelodyExtractor = function () {
   }, {
     key: 'find_note_idx_in_window_specific_channel',
     value: function find_note_idx_in_window_specific_channel(channel, tmpWinStart, tmpWinEnd) {
-      console.log("******channel", channel);
+      // console.log("******channel", channel)
       var flag = 0;
       for (var i = 0; i <= this.points.length - 1; i++) {
         if (this.points[i][3] === channel && this.points[i][0] >= tmpWinStart && this.points[i][0] < tmpWinEnd) {
           flag = 1;
-          console.log("orgPoints", this.points[i]);
+          // console.log("orgPoints", this.points[i])
         }
       }
       return flag;
@@ -280,14 +292,25 @@ var MelodyExtractor = function () {
       var timeSig = 4; // TODO: we will need to know the real time segment.
 
       var winStart = 0;
-      var winEnd = winStart + winSize * timeSig;
+      var winEnd = void 0;
+      if (this.winSize === null) {
+        winEnd = prominentNotes[prominentNotes.length - 1].ontime + 1;
+      } else {
+        winEnd = winStart + winSize * timeSig;
+      }
+      // console.log("winStart:", winStart)
+      // console.log("winEnd:", winEnd)
       var winEndOntime = prominentNotes[prominentNotes.length - 1].ontime;
 
-      console.log("prominentNotes.length", prominentNotes.length);
+      // console.log("prominentNotes.length", prominentNotes.length)
       // Notes in weightedCounts [ ontime, pitch, duration, channel, velocity]
       while (winStart < winEndOntime) {
 
         var winIdx = this.find_note_idx_in_window(prominentNotes, winStart, winEnd);
+        if (this.winSize === null) {
+          winIdx[1] = prominentNotes.length - 1;
+        }
+        // console.log("winIdx:", winIdx)
         // console.log("***winStart", winStart)
         // console.log("***winEnd", winEnd)
         if (winIdx[1] !== 0) {
@@ -301,8 +324,8 @@ var MelodyExtractor = function () {
             currentMelodyChannel.forEach(function (item) {
               for (var tmpWinStart = winStart; tmpWinStart + 1 * timeSig <= winEnd; tmpWinStart = tmpWinStart + 1 * timeSig) {
                 var tmpWinEnd = tmpWinStart + 1 * timeSig;
-                console.log("&&&&&&&tmpWinStart", tmpWinStart);
-                console.log("&&&&&&&tmpWinEnd", tmpWinEnd);
+                // console.log("&&&&&&&tmpWinStart", tmpWinStart)
+                // console.log("&&&&&&&tmpWinEnd", tmpWinEnd)
                 var flag = self.find_note_idx_in_window_specific_channel(parseInt(item), tmpWinStart, tmpWinEnd);
                 if (flag !== 0) {
                   melodyChannel.push([parseInt(item), [tmpWinStart, tmpWinEnd], currentMaxStrength]);
@@ -312,8 +335,13 @@ var MelodyExtractor = function () {
           })();
         }
 
-        winStart = winStart + winStep * timeSig;
-        winEnd = winStart + winSize * timeSig;
+        if (this.winSize === null) {
+          winStart = winEndOntime;
+          winEnd = null;
+        } else {
+          winStart = winStart + winStep * timeSig;
+          winEnd = winStart + winSize * timeSig;
+        }
 
         // console.log("nextStartIdx", nextStartIdx)
       }
@@ -361,7 +389,7 @@ var MelodyExtractor = function () {
         processedMelodyChannel.push([parseInt(winChannel), startOntime]);
         startOntime = startOntime + 1;
       }
-      console.log("processedMelodyChannel", processedMelodyChannel);
+      // console.log("processedMelodyChannel", processedMelodyChannel)
       // Get melody points
       var currentOntimeIdx = 0;
       this.points.forEach(function (point) {
