@@ -3089,7 +3089,7 @@ var mm = (function () {
       const self = this;
       let ontimeCorrection = 0;
       const minOntime = mu$2.min_argmin(
-        self.points.map(function(p){ return p[self.ontimeIndex] })
+        self.points.map(function(p){ return p[self.noteIndices.ontimeIndex] })
       )[0];
       if (minOntime < 0){
         ontimeCorrection = 4*self.timeSigtopNo/self.timeSigBottomNo;
@@ -7206,7 +7206,7 @@ var mm = (function () {
    * This documentation is in the process of being completed. Some functions have
    * not had their existing documentation converted to JSDoc format yet.
    *
-   * @version 0.1.11
+   * @version 0.1.13
    * @author Tom Collins and Christian Coulon
    * @copyright 2015-2025
    *

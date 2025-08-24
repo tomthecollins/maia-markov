@@ -56,7 +56,7 @@ class MidiExport {
     const self = this
     let ontimeCorrection = 0
     const minOntime = mu.min_argmin(
-      self.points.map(function(p){ return p[self.ontimeIndex] })
+      self.points.map(function(p){ return p[self.noteIndices.ontimeIndex] })
     )[0]
     if (minOntime < 0){
       ontimeCorrection = 4*self.timeSigtopNo/self.timeSigBottomNo

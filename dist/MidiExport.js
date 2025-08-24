@@ -74,7 +74,7 @@ var MidiExport = function () {
       var self = this;
       var ontimeCorrection = 0;
       var minOntime = mu.min_argmin(self.points.map(function (p) {
-        return p[self.ontimeIndex];
+        return p[self.noteIndices.ontimeIndex];
       }))[0];
       if (minOntime < 0) {
         ontimeCorrection = 4 * self.timeSigtopNo / self.timeSigBottomNo;
